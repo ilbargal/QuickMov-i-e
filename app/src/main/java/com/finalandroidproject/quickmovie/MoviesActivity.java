@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.finalandroidproject.quickmovie.Fragments.FriendFragment;
 import com.finalandroidproject.quickmovie.Fragments.MovieFragment;
 
 import java.util.LinkedList;
@@ -20,6 +21,7 @@ public class MoviesActivity extends Activity {
 
     // Fragments
     MovieFragment movieFragment;
+    FriendFragment friendFragment;
 
     // Data Members
     List<Fragment> fragmentsList = new LinkedList<Fragment>();
@@ -33,7 +35,9 @@ public class MoviesActivity extends Activity {
 
         FragmentTransaction trans = getFragmentManager().beginTransaction();
         trans.add(R.id.frgContainer, movieFragment);
-        trans.show(movieFragment);
+        trans.add(R.id.frgContainer, friendFragment);
+        trans.hide(movieFragment);
+        trans.show(friendFragment);
         // TODO : after this we need to add all fragments
         trans.commit();
     }
@@ -44,6 +48,8 @@ public class MoviesActivity extends Activity {
         invitationsButton = (Button) findViewById(R.id.btnInvitationsTab);
 
         movieFragment = new MovieFragment();
+        friendFragment = new FriendFragment();
         fragmentsList.add(movieFragment);
+        fragmentsList.add(friendFragment);
     }
 }
