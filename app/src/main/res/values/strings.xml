@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">QuickMov(i)e</string>
+    <string name="title_activity_main">QuickMov(i)e</string>
+    <string name="action_settings">Settings</string>
 </resources>
