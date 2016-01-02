@@ -2,4 +2,11 @@
     <string name="app_name">QuickMov(i)e</string>
     <string name="title_activity_main">QuickMov(i)e</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="action_sign_in">התחבר</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">סיסמה לא נכונה</string>
+    <string name="error_field_required">שדה חובה</string>
 </resources>
