@@ -1,7 +1,7 @@
 package com.finalandroidproject.quickmovie.Model;
 
 /**
- * Created by יגאל on 30/12/2015.
+ * Created by Bar Gal on 30/12/2015.
  */
 public class Friend {
     private String name;

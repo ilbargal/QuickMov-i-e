@@ -89,19 +89,11 @@ public class FriendFragment extends ListFragment {
 
             ImageView imgFriendImage = (ImageView) convertView.findViewById(R.id.imgFriendImage);
             TextView txtFriendName = (TextView) convertView.findViewById(R.id.txtFriendName);
-            Button btnInviteFriend = (Button) convertView.findViewById(R.id.btnInvite);
 
             Friend currFriend = Cache.Friends.get(position);
 
             // TODO: set friend image
-            txtFriendName.setText(currFriend.getName());
-            btnInviteFriend.setText("הזמן את " + currFriend.getName() + " לסרט");
-            btnInviteFriend.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO: this
-                }
-            });
+            txtFriendName.setText(currFriend.getName() + " הזמין אותך לסרט");
             return convertView;
         }
     }
