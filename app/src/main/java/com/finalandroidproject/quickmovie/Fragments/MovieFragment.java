@@ -1,0 +1,108 @@
+package com.finalandroidproject.quickmovie.Fragments;
+
+import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.os.Bundle;
+import android.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.TextView;
+
+import com.finalandroidproject.quickmovie.Model.Cache;
+import com.finalandroidproject.quickmovie.Model.Movie;
+import com.finalandroidproject.quickmovie.R;
+
+public class MovieFragment extends Fragment implements AbsListView.OnItemClickListener {
+    private OnFragmentInteractionListener mListener;
+    private AbsListView mListView;
+    private MovieListAdapter mAdapter;
+
+    public MovieFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAdapter = new MovieListAdapter();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_movie_grid, container, false);
+
+        // Set the adapter
+        mListView = (AbsListView) view.findViewById(android.R.id.list);
+        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+
+        // Set OnItemClickListener so we can be notified on item clicks
+        mListView.setOnItemClickListener(this);
+
+        return view;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (null != mListener) {
+            // Notify the active callbacks interface (the activity, if the
+            // fragment is attached to one) that an item has been selected.
+            mListener.onFragmentInteraction(Cache.Movies.get(position).getName());
+        }
+    }
+
+    public interface OnFragmentInteractionListener {
+        public void onFragmentInteraction(String currMovie);
+    }
+
+    class MovieListAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+            return Cache.Movies.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return Cache.Movies.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                convertView = inflater.inflate(R.layout.movie_row_layout, null);
+            }
+
+            TextView txtMovieName = (TextView) convertView.findViewById(R.id.txtMovieName);
+            ImageView imgMovieImage = (ImageView) convertView.findViewById(R.id.imgMovieImage);
+            Button btnInviteFriendToMovie = (Button) convertView.findViewById(R.id.btnInviteFriends);
+
+            Movie currMovie = Cache.Movies.get(position);
+            txtMovieName.setText(currMovie.getName());
+
+            // TODO : change image source
+
+            btnInviteFriendToMovie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: this
+                    //Log.d("TAG", "Invite friends to movie " + currMovie.getName());
+                }
+            });
+            return convertView;
+        }
+    }
+}
