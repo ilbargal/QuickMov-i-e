@@ -5,4 +5,14 @@
     tools:context="com.finalandroidproject.quickmovie.Fragments.FriendFragment">
     <ListView android:id="@android:id/list" android:layout_width="match_parent"
         android:layout_height="match_parent" android:numColumns="2" />
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="410dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="250dp"
+        android:text="+"
+        android:background="@drawable/roundedbutton"
+        android:id="@+id/btnAddFriend"/>
 </FrameLayout>

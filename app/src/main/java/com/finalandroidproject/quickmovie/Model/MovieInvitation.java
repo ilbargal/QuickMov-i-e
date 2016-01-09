@@ -14,6 +14,16 @@ public class MovieInvitation {
     private Date invitationDate;
     private boolean isAccepted;
 
+    public MovieInvitation(int id, Friend fromFriend, Friend toFriend, Movie movie, String cinema, Date invitationDate) {
+        this.id = id;
+        this.fromFriend = fromFriend;
+        this.toFriend = toFriend;
+        this.movie = movie;
+        this.cinema = cinema;
+        this.invitationDate = invitationDate;
+        this.isAccepted = false;
+    }
+
     public int getId() {
         return id;
     }

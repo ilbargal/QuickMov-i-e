@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.finalandroidproject.quickmovie.Fragments.FriendFragment;
+import com.finalandroidproject.quickmovie.Fragments.InvitationFragment;
 import com.finalandroidproject.quickmovie.Fragments.MovieFragment;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
@@ -112,9 +113,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new MovieFragment();
-                case 1:
                     return new FriendFragment();
+                case 1:
+                    return new InvitationFragment();
                 case 2:
                     return new MovieFragment();
                 default:

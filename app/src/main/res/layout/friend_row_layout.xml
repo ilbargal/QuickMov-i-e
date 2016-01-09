@@ -17,4 +17,10 @@
         android:layout_height="wrap_content"
         android:text="השם שלי"
         android:layout_weight="1"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="הזמן לסרט"
+        android:layout_weight="1"
+        android:id="@+id/btnInviteToMovie"/>
 </LinearLayout>

@@ -1,15 +1,12 @@
 package com.finalandroidproject.quickmovie.Fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +19,7 @@ import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.R;
 
 public class FriendFragment extends ListFragment {
+    Button btnAddFriend;
 
     private AbsListView mListView;
     private FriendListAdapter mAdapter;
@@ -44,6 +42,14 @@ public class FriendFragment extends ListFragment {
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+
+        btnAddFriend = (Button) view.findViewById(R.id.btnAddFriend);
+        btnAddFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: get all users contacts and open new fragment or change the current fragment...
+            }
+        });
 
         // Set OnItemClickListener so we can be notified on item clicks
         //mListView.setOnItemClickListener((AdapterView.OnItemClickListener) this);
@@ -89,11 +95,19 @@ public class FriendFragment extends ListFragment {
 
             ImageView imgFriendImage = (ImageView) convertView.findViewById(R.id.imgFriendImage);
             TextView txtFriendName = (TextView) convertView.findViewById(R.id.txtFriendName);
+            Button btnInviteToMovie = (Button) convertView.findViewById(R.id.btnInviteToMovie);
 
             Friend currFriend = Cache.Friends.get(position);
 
             // TODO: set friend image
-            txtFriendName.setText(currFriend.getName() + " הזמין אותך לסרט");
+            txtFriendName.setText(currFriend.getName());
+            btnInviteToMovie.setText("הזמן את "  + currFriend.getName() + "לסרט");
+            btnInviteToMovie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: open movieInvitation fragment
+                }
+            });
             return convertView;
         }
     }
