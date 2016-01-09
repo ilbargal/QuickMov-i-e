@@ -2,9 +2,6 @@ package com.finalandroidproject.quickmovie.Model;
 
 import java.util.Date;
 
-/**
- * Created by Bar Gal on 06/01/2016.
- */
 public class MovieInvitation {
     private int id;
     private Friend fromFriend;
