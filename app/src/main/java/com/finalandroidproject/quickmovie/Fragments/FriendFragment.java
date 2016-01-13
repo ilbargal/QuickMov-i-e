@@ -1,5 +1,6 @@
 package com.finalandroidproject.quickmovie.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.R;
@@ -105,7 +107,8 @@ public class FriendFragment extends ListFragment {
             btnInviteToMovie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: open movieInvitation fragment
+                    Intent selectMovieNavigationIntent = new Intent(getActivity(), NavigationActivity.class);
+                    startActivity(selectMovieNavigationIntent);
                 }
             });
             return convertView;
