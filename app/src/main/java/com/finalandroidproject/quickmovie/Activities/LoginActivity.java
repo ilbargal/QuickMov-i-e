@@ -23,10 +23,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.finalandroidproject.quickmovie.DAL.UserDAL;
 import com.finalandroidproject.quickmovie.MainActivity;
 import com.finalandroidproject.quickmovie.Model.User;
 import com.finalandroidproject.quickmovie.R;
 import com.parse.Parse;
+import com.parse.ParseException;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -199,10 +201,9 @@ public class LoginActivity extends Activity {
         @Override
         protected User doInBackground(String... params) {
             try {
-                // Simulate network access.
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                return null;
+                return UserDAL.instance.loginUser(params[0],params[1]);
+            } catch (ParseException e) {
+
             }
 
             // TODO: register the new account here.
@@ -220,7 +221,7 @@ public class LoginActivity extends Activity {
             showProgress(false);
 
             // User successfully login
-            if (user == null) {
+            if (user != null) {
                 // Go to main activity
                 Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(mainActivity);

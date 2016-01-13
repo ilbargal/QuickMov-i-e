@@ -12,7 +12,7 @@ import com.parse.ParseQuery;
  * Created by nivg1 on 13/01/2016.
  */
         public class UserDAL implements iUserActions {
-            private final static UserDAL instance = new UserDAL();
+            public final static UserDAL instance = new UserDAL();
 
             @Override
             public User loginUser(String Phone, String Password) throws ParseException {
@@ -20,22 +20,22 @@ import com.parse.ParseQuery;
                 query.whereEqualTo("PhoneNumID", Phone);
         query.whereEqualTo("Password", Password);
         List<ParseObject> data = query.find();
-
+        User uUser = null;
         // Check if return one line
         if(data.size() == 1) {
             for (ParseObject po : data) {
                 String PhoneNumID = po.getString("PhoneNumID");
                 String name = po.getString("Name");
 
-                User uUser = new User();
+                uUser = new User();
                 uUser.setPhone(PhoneNumID);
                 uUser.setName(name);
 
-                return uUser;
+                break;
             }
         }
 
-        return null;
+        return uUser;
     }
 
     @Override
