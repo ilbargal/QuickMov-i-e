@@ -21,9 +21,10 @@
         <meta-data
             android:name="com.parse.CLIENT_KEY"
             android:value="LvD5cHicx6OJTN5whqepxH269zLp7kCe82rB7OC6" />
+
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main">
+            android:label="@string/title_activity_main" >
         </activity>
         <activity
             android:name=".Activities.LoginActivity"
@@ -33,6 +34,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Activities.NavigationActivity" >
         </activity>
     </application>
 
