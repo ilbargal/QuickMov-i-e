@@ -24,7 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.finalandroidproject.quickmovie.MainActivity;
+import com.finalandroidproject.quickmovie.Model.User;
 import com.finalandroidproject.quickmovie.R;
+import com.parse.Parse;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 public class LoginActivity extends Activity {
@@ -43,6 +46,11 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this);
+
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
@@ -125,7 +133,7 @@ public class LoginActivity extends Activity {
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.execute((Void) null);
+            mAuthTask.execute(username, password);
         }
     }
 
@@ -178,11 +186,7 @@ public class LoginActivity extends Activity {
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<String, Void, User> {
 
         private final String mUsername;
         private final String mPassword;
@@ -193,29 +197,34 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
+        protected User doInBackground(String... params) {
             try {
                 // Simulate network access.
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
-                return false;
+                return null;
             }
 
             // TODO: register the new account here.
-            return true;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
+            // User successfully login
+            if (user == null) {
                 // Go to main activity
                 Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(mainActivity);
+                finish();
 
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
