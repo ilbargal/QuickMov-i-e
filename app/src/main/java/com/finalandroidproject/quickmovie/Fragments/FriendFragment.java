@@ -1,5 +1,7 @@
 package com.finalandroidproject.quickmovie.Fragments;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.view.LayoutInflater;
@@ -48,6 +50,12 @@ public class FriendFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 // TODO: get all users contacts and open new fragment or change the current fragment...
+                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                ContactsFragment fragment = new ContactsFragment();
+               // fragmentTransaction.show(R.id.fragmentContainer, fragment);
+                fragmentTransaction.addToBackStack("friendsTAG");
+                fragmentTransaction.commit();
             }
         });
 
