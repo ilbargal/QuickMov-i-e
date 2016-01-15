@@ -44,6 +44,7 @@ public class LoginActivity extends Activity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Button mSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class LoginActivity extends Activity {
             }
         });
 
-        Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
+        mSignInButton = (Button) findViewById(R.id.sign_in_button);
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -152,14 +153,11 @@ public class LoginActivity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+            //mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mUsernameView.setEnabled(show ? false : true);
+            mPasswordView.setEnabled(show ? false : true);
+            mSignInButton.setEnabled(show ? false : true);
+
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
@@ -173,7 +171,10 @@ public class LoginActivity extends Activity {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            //mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mUsernameView.setEnabled(show ? false : true);
+            mPasswordView.setEnabled(show ? false : true);
+            mSignInButton.setEnabled(show ? false : true);
         }
     }
 
@@ -218,7 +219,7 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(User user) {
             mAuthTask = null;
-            showProgress(false);
+            //showProgress(false);
 
             // User successfully login
             if (user != null) {
@@ -228,6 +229,7 @@ public class LoginActivity extends Activity {
                 finish();
 
             } else {
+                showProgress(false);
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
