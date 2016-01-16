@@ -1,13 +1,17 @@
 package com.finalandroidproject.quickmovie.DAL;
 
+import android.location.Location;
 import android.util.Log;
 
 import com.finalandroidproject.quickmovie.Interfaces.IMovieActions;
+import com.finalandroidproject.quickmovie.Model.Cinema;
 import com.finalandroidproject.quickmovie.Model.Movie;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -33,8 +37,6 @@ public class MovieDAL implements IMovieActions {
                 query.fromLocalDatastore();
             }
 
-            query.include("Cinemas");
-
             if(Refresh) {
                 ParseObject.unpinAllInBackground("Movies");
             }
@@ -52,12 +54,13 @@ public class MovieDAL implements IMovieActions {
 
                 Movie mMovie = new Movie();
                 String name = movieObject.getString("Name");
-                String ganre = movieObject.getString("Ganre");
+                String ganre = movieObject.getString("Genre");
                 String description = movieObject.getString("Description");
                 double rating = movieObject.getDouble("Rating");
                 String image = movieObject.getParseFile("Image").getUrl();
-//                ParseObject Cinema = movieObject.getParseObject("Cinema");
-//                Log.d("Cinema",Cinema.getString("Name"));
+                ParseRelation Cinema = movieObject.getRelation("Cinema");
+
+
 
                 mMovie = new Movie();
                 mMovie.setName(name);
@@ -65,13 +68,47 @@ public class MovieDAL implements IMovieActions {
                 mMovie.setDescription(description);
                 mMovie.setRating(rating);
                 mMovie.setImagePath(image);
+                mMovie.setCinemas(getCinemas(Cinema.getQuery(),Refresh));
 
                 arrMovies.add(mMovie);
 
             }
-
+            _movieInLocalStore = true;
             return arrMovies;
         } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Cinema> getCinemas(ParseQuery query, boolean Refresh){
+        try {
+            if (_movieInLocalStore && !Refresh) {
+                query.fromLocalDatastore();
+            }
+
+            List<ParseObject> data =  query.find();
+
+            List<Cinema> Cinames = new ArrayList<>();
+            for (ParseObject cinemaObject : data) {
+                if (!_movieInLocalStore) {
+                    cinemaObject.pinInBackground("Cinemas");
+                }
+
+                Cinema newCinema = new Cinema();
+                newCinema.setName(cinemaObject.getString("Name"));
+                ParseGeoPoint Geopoint = cinemaObject.getParseGeoPoint("Location");
+                Location loc = new Location("Parse");
+                loc.setLatitude(Geopoint.getLatitude());
+                loc.setLongitude(Geopoint.getLongitude());
+                newCinema.setLocation(loc);
+
+                Cinames.add(newCinema);
+            }
+
+            return  Cinames;
+        } catch (ParseException e) {
+            e.printStackTrace();
             return null;
         }
     }
