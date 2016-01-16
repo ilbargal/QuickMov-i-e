@@ -1,24 +1,23 @@
 package com.finalandroidproject.quickmovie.Fragments;
 
 import android.app.Fragment;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.finalandroidproject.quickmovie.DAL.MovieDAL;
-import com.finalandroidproject.quickmovie.DownloadImageTask;
-import com.finalandroidproject.quickmovie.IntentHelper;
+import com.finalandroidproject.quickmovie.UsefulClasses.DownloadImageTask;
+import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.Movie;
+import com.finalandroidproject.quickmovie.Model.MovieInvitation;
 import com.finalandroidproject.quickmovie.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SelectMovieFragment extends Fragment {
@@ -48,13 +47,40 @@ public class SelectMovieFragment extends Fragment {
     public void initalize(View currView) {
         //Movie myMovie = new MovieDAL().getMovieByName("bla bla");
         Movie myMovie = new Movie("משימה בלתי אפשרית 5", "משימה בלתי אפשרית 5 הוא סרט ממש טוב עם טום קרוז. לכו לראות!", "5", "אימה", null, "https://upload.wikimedia.org/wikipedia/he/6/63/Mission_Impossible_-_Rogue_Nation.jpg");
+        final List<Friend> friends = new ArrayList<Friend>();
 
         if (myMovie != null) {
+            TextView movieName = (TextView) currView.findViewById(R.id.lstMovies);
             TextView movieDescription = (TextView) currView.findViewById(R.id.selectionMovieDescription);
             ImageView movieImage = (ImageView) currView.findViewById(R.id.selectionMovieImage);
 
+            movieName.setText(myMovie.getName());
             movieDescription.setText(myMovie.getDescription());
             new DownloadImageTask(movieImage).execute(myMovie.getImagePath());
         }
+
+        Button btnAddInvitation = (Button) currView.findViewById(R.id.btnCreateInvitation);
+        btnAddInvitation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Save invitaion and get back
+                MovieInvitation invitation;
+
+                for (Friend currFriend : friends)
+                {
+                    invitation = new MovieInvitation(1,
+                                                     new Friend("Bar gal", "123"),
+                                                     currFriend,
+                                                     currMovie,
+                                                     "גלילות",
+                                                     new Date());
+
+                    // Save invitation
+                }
+
+
+                getActivity().onBackPressed();
+            }
+        });
     }
 }
