@@ -7,7 +7,7 @@ import java.util.List;
 public class Movie {
     private String name;
     private String description;
-    private String rating;
+    private double rating;
     private String ganre;
     private List<Cinema> cinemas;
     private String imagePath;
@@ -23,7 +23,7 @@ public class Movie {
     }
 
 
-    public Movie(String name, String description, String rating, String zaner, List<Cinema> cinemas, String imagePath) {
+    public Movie(String name, String description, double rating, String zaner, List<Cinema> cinemas, String imagePath) {
         this.name = name;
         this.description = description;
         this.rating = rating;
@@ -48,11 +48,11 @@ public class Movie {
         this.description = description;
     }
 
-    public String getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
