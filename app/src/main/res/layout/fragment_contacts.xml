@@ -4,7 +4,6 @@
     tools:context="com.finalandroidproject.quickmovie.Fragments.ContactsFragment">
 
     <ListView android:id="@android:id/list" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:numColumns="2"
-        android:background="@color/colorPrimary"/>
+        android:layout_height="match_parent" android:numColumns="2"/>
 
 </FrameLayout>
