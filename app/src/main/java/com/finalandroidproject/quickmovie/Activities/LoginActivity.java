@@ -23,8 +23,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.finalandroidproject.quickmovie.DAL.MovieDAL;
 import com.finalandroidproject.quickmovie.DAL.UserDAL;
 import com.finalandroidproject.quickmovie.MainActivity;
+import com.finalandroidproject.quickmovie.Model.Movie;
 import com.finalandroidproject.quickmovie.Model.User;
 import com.finalandroidproject.quickmovie.R;
 import com.parse.Parse;
@@ -80,6 +82,10 @@ public class LoginActivity extends Activity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+
+        // Tests
+        //List<Movie> Movies = MovieDAL.instance.getAllMovies(0,10,false);
     }
 
     private boolean mayRequestContacts() {
