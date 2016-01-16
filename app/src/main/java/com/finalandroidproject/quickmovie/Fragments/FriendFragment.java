@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
+import com.finalandroidproject.quickmovie.IntentHelper;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.R;
@@ -99,7 +100,7 @@ public class FriendFragment extends ListFragment {
             TextView txtFriendName = (TextView) convertView.findViewById(R.id.txtFriendName);
             Button btnInviteToMovie = (Button) convertView.findViewById(R.id.btnInviteToMovie);
 
-            Friend currFriend = Cache.Friends.get(position);
+            final Friend currFriend = Cache.Friends.get(position);
 
             // TODO: set friend image
             txtFriendName.setText(currFriend.getName());
@@ -108,6 +109,7 @@ public class FriendFragment extends ListFragment {
                 @Override
                 public void onClick(View v) {
                     Intent selectMovieNavigationIntent = new Intent(getActivity(), NavigationActivity.class);
+                    IntentHelper.addObjectForKey("friend", currFriend);
                     startActivity(selectMovieNavigationIntent);
                 }
             });
