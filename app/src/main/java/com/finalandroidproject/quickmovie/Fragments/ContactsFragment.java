@@ -1,6 +1,7 @@
 package com.finalandroidproject.quickmovie.Fragments;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,8 +11,12 @@ import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.finalandroidproject.quickmovie.R;
@@ -19,9 +24,11 @@ import com.finalandroidproject.quickmovie.R;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ContactsFragment extends Fragment {
-    List<String> contacts;
+public class ContactsFragment extends ListFragment {
+    private List<String> contacts;
     private ContactsListAdapter mAdapter;
+    //private ListView list;
+    private AbsListView mListView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -52,6 +59,14 @@ public class ContactsFragment extends Fragment {
                 contacts.add(name);
             }
         }
+
+        // Set the adapter
+        mListView = (AbsListView) view.findViewById(android.R.id.list);
+        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+
+//        list = (ListView) view.findViewById(R.id.contactsList);
+//        mAdapter = new ContactsListAdapter();
+//        list.setAdapter(mAdapter);
 
         return view;
     }
