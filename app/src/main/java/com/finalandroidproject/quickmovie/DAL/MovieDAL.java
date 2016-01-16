@@ -53,7 +53,7 @@ public class MovieDAL implements IMovieActions {
                 String ganre = movieObject.getString("Ganre");
                 String description = movieObject.getString("Description");
                 double rating = movieObject.getDouble("Rating");
-                String image = movieObject.getString("Image");
+                String image = movieObject.getParseFile("Image").getUrl();
 //                ParseObject Cinema = movieObject.getParseObject("Cinema");
 //                Log.d("Cinema",Cinema.getString("Name"));
 
@@ -112,7 +112,7 @@ public class MovieDAL implements IMovieActions {
                 String ganre = movieObject.getString("Ganre");
                 String description = movieObject.getString("Description");
                 double rating = movieObject.getDouble("Rating");
-                String image = movieObject.getString("Image");
+                String image = movieObject.getParseFile("Image").getUrl();
 
                 mMovie = new Movie();
                 mMovie.setName(name);
