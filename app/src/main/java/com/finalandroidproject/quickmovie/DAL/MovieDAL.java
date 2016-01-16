@@ -5,6 +5,7 @@ import android.util.Log;
 import com.finalandroidproject.quickmovie.Interfaces.IMovieActions;
 import com.finalandroidproject.quickmovie.Model.Movie;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -32,13 +33,14 @@ public class MovieDAL implements IMovieActions {
                 query.fromLocalDatastore();
             }
 
-            //query.include("Cinemas");
+            query.include("Cinemas");
 
             if(Refresh) {
                 ParseObject.unpinAllInBackground("Movies");
             }
 
             query.setLimit(MaxMovies);
+            query.setSkip(startIndex);
 
             List<ParseObject> data = query.find();
 
@@ -112,14 +114,14 @@ public class MovieDAL implements IMovieActions {
                 String ganre = movieObject.getString("Ganre");
                 String description = movieObject.getString("Description");
                 double rating = movieObject.getDouble("Rating");
-                String image = movieObject.getString("Image");
+                ParseFile image = movieObject.getParseFile("Image");
 
                 mMovie = new Movie();
                 mMovie.setName(name);
                 mMovie.setGanre(ganre);
                 mMovie.setDescription(description);
                 mMovie.setRating(rating);
-                mMovie.setImagePath(image);
+                mMovie.setImagePath(image.getUrl());
 
                 arrMovies.add(mMovie);
             }
