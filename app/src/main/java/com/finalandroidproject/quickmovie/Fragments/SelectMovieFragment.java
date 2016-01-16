@@ -1,7 +1,10 @@
 package com.finalandroidproject.quickmovie.Fragments;
 
 import android.app.Fragment;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,17 +50,23 @@ public class SelectMovieFragment extends Fragment {
     public void initalize(View currView) {
         //Movie myMovie = new MovieDAL().getMovieByName("bla bla");
         final List<Friend> friends = new ArrayList<Friend>();
-
-        if (currMovie != null) {
-
-            TextView movieName = (TextView) currView.findViewById(R.id.lstMovies);
-            TextView movieDescription = (TextView) currView.findViewById(R.id.selectionMovieDescription);
-            ImageView movieImage = (ImageView) currView.findViewById(R.id.selectionMovieImage);
-
-            movieName.setText(currMovie.getName());
-            movieDescription.setText(currMovie.getDescription());
-            new DownloadImageTask(movieImage).execute(currMovie.getImagePath());
+        // For testing
+        if (currMovie == null) {
+            currMovie = new Movie("משימה בלתי אפשרית 5","1\r\n2\n3\n4\n5\n6\n7\n8\n9\n10\n112" , 8.4, "פעולה", null, "https://upload.wikimedia.org/wikipedia/he/6/63/Mission_Impossible_-_Rogue_Nation.jpg");
         }
+
+        TextView movieName = (TextView) currView.findViewById(R.id.lstMovies);
+        TextView movieDescription = (TextView) currView.findViewById(R.id.selectionMovieDescription);
+        ImageView movieImage = (ImageView) currView.findViewById(R.id.selectionMovieImage);
+        TextView movieRating = (TextView) currView.findViewById(R.id.selectionMovieRating);
+
+        movieName.setText(currMovie.getName());
+        movieDescription.setMovementMethod(new ScrollingMovementMethod());
+        movieDescription.setText(currMovie.getDescription());
+        new DownloadImageTask(movieImage).execute(currMovie.getImagePath());
+
+        movieRating.setText(String.valueOf(currMovie.getRating()) + " / 10");
+        paintMovieByRating(movieRating, currMovie.getRating());
 
         Button btnAddInvitation = (Button) currView.findViewById(R.id.btnCreateInvitation);
         btnAddInvitation.setOnClickListener(new View.OnClickListener() {
@@ -82,5 +91,14 @@ public class SelectMovieFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+    }
+
+    private void paintMovieByRating(TextView textView, double rating) {
+        if (rating >= 8)
+            textView.setTextColor(Color.GREEN);
+        else if (rating < 8 && rating > 4)
+            textView.setTextColor(Color.YELLOW);
+        else
+            textView.setTextColor(Color.RED);
     }
 }
