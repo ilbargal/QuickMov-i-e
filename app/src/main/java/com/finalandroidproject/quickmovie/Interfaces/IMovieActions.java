@@ -6,7 +6,7 @@ import java.util.Dictionary;
 import java.util.List;
 
 public interface IMovieActions {
-    List<Movie> getAllMovies();
+    List<Movie> getAllMovies(int startIndex,int MaxMovies);
     Movie getMovieByName(String movieName);
     List<Movie> getMoviesByParameters(Dictionary<String, Object> parameters);
     void insertMovie(Movie newMovie);
