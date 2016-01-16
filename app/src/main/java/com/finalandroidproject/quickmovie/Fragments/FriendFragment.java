@@ -1,5 +1,7 @@
 package com.finalandroidproject.quickmovie.Fragments;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.ListFragment;
@@ -16,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
+import com.finalandroidproject.quickmovie.IntentHelper;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.R;
@@ -50,6 +53,12 @@ public class FriendFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 // TODO: get all users contacts and open new fragment or change the current fragment...
+                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                ContactsFragment fragment = new ContactsFragment();
+                fragmentTransaction.replace(R.id.pager, fragment);
+                fragmentTransaction.addToBackStack("friendsTAG");
+                fragmentTransaction.commit();
             }
         });
 
@@ -99,7 +108,7 @@ public class FriendFragment extends ListFragment {
             TextView txtFriendName = (TextView) convertView.findViewById(R.id.txtFriendName);
             Button btnInviteToMovie = (Button) convertView.findViewById(R.id.btnInviteToMovie);
 
-            Friend currFriend = Cache.Friends.get(position);
+            final Friend currFriend = Cache.Friends.get(position);
 
             // TODO: set friend image
             txtFriendName.setText(currFriend.getName());
@@ -108,6 +117,7 @@ public class FriendFragment extends ListFragment {
                 @Override
                 public void onClick(View v) {
                     Intent selectMovieNavigationIntent = new Intent(getActivity(), NavigationActivity.class);
+                    IntentHelper.addObjectForKey("friend", currFriend);
                     startActivity(selectMovieNavigationIntent);
                 }
             });
