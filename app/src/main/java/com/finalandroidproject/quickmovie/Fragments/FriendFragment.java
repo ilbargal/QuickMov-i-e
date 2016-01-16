@@ -18,7 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
-import com.finalandroidproject.quickmovie.IntentHelper;
+import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 import com.finalandroidproject.quickmovie.MainActivity;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Friend;
@@ -114,7 +114,7 @@ public class FriendFragment extends ListFragment {
 
             // TODO: set friend image
             txtFriendName.setText(currFriend.getName());
-            btnInviteToMovie.setText("הזמן את "  + currFriend.getName() + "לסרט");
+            btnInviteToMovie.setText("הזמן את "  + currFriend.getName() + " לסרט");
             btnInviteToMovie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -5,13 +5,16 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
 import com.finalandroidproject.quickmovie.UsefulClasses.DownloadImageTask;
 import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 import com.finalandroidproject.quickmovie.Model.Friend;
@@ -27,6 +30,7 @@ public class SelectMovieFragment extends Fragment {
 
     public Movie currMovie;
     public List<Friend> friends;
+    public InvitationCreateListener listener;
 
     public SelectMovieFragment() {
         friends = new ArrayList<Friend>();
@@ -49,6 +53,12 @@ public class SelectMovieFragment extends Fragment {
 
     public void initalize(View currView) {
         //Movie myMovie = new MovieDAL().getMovieByName("bla bla");
+        listener = new InvitationCreateListener() {
+            @Override
+            public void onInvitationsCreated(Movie currMovie) {
+                Toast.makeText(getActivity(), "הזמנותיך עבור הסרט "  + currMovie.getName() + " נשלחו לחבריך", Toast.LENGTH_LONG).show();
+            }
+        };
         final List<Friend> friends = new ArrayList<Friend>();
         // For testing
         if (currMovie == null) {
@@ -59,6 +69,7 @@ public class SelectMovieFragment extends Fragment {
         TextView movieDescription = (TextView) currView.findViewById(R.id.selectionMovieDescription);
         ImageView movieImage = (ImageView) currView.findViewById(R.id.selectionMovieImage);
         TextView movieRating = (TextView) currView.findViewById(R.id.selectionMovieRating);
+        TextView movieSelectedCinema = (TextView) currView.findViewById(R.id.selectionMovieCinema);
 
         movieName.setText(currMovie.getName());
         movieDescription.setMovementMethod(new ScrollingMovementMethod());
@@ -67,6 +78,8 @@ public class SelectMovieFragment extends Fragment {
 
         movieRating.setText(String.valueOf(currMovie.getRating()) + " / 10");
         paintMovieByRating(movieRating, currMovie.getRating());
+        //movieSelectedCinema.setText(currMovie.getCinemas().get(1));
+        movieSelectedCinema.setText("סינימה סיטי גלילות");
 
         Button btnAddInvitation = (Button) currView.findViewById(R.id.btnCreateInvitation);
         btnAddInvitation.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +99,8 @@ public class SelectMovieFragment extends Fragment {
 
                     // Save invitation
                 }
-
-
-                getActivity().onBackPressed();
+                getActivity().finish();
+                listener.onInvitationsCreated(currMovie);
             }
         });
     }
@@ -100,5 +112,9 @@ public class SelectMovieFragment extends Fragment {
             textView.setTextColor(Color.YELLOW);
         else
             textView.setTextColor(Color.RED);
+    }
+
+    public interface InvitationCreateListener {
+        void onInvitationsCreated(Movie currMovie);
     }
 }
