@@ -9,7 +9,7 @@ public class Movie {
     private String description;
     private double rating;
     private String ganre;
-    private List<String> cinemas;
+    private List<Cinema> cinemas;
     private String imagePath;
 
     public Movie() {
@@ -19,11 +19,11 @@ public class Movie {
     public Movie(String name, String imagePath) {
         this.name = name;
         this.imagePath = imagePath;
-        this.cinemas = new ArrayList<String>();
+        this.cinemas = new ArrayList<Cinema>();
     }
 
 
-    public Movie(String name, String description, double rating, String zaner, List<String> cinemas, String imagePath) {
+    public Movie(String name, String description, double rating, String zaner, List<Cinema> cinemas, String imagePath) {
         this.name = name;
         this.description = description;
         this.rating = rating;
@@ -64,11 +64,11 @@ public class Movie {
         this.ganre = zaner;
     }
 
-    public List<String> getCinemas() {
+    public List<Cinema> getCinemas() {
         return cinemas;
     }
 
-    public void setCinemas(List<String> cinemas) {
+    public void setCinemas(List<Cinema> cinemas) {
         this.cinemas = cinemas;
     }
 
