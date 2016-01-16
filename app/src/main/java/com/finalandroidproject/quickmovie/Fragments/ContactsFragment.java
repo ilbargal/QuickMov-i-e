@@ -1,13 +1,12 @@
 package com.finalandroidproject.quickmovie.Fragments;
 
-import android.app.Activity;
 import android.app.ListFragment;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ContactsFragment extends ListFragment {
-    private List<String> contacts;
+    private static List<String> contacts;
     private ContactsListAdapter mAdapter;
-    //private ListView list;
-    private AbsListView mListView;
+   // private AbsListView mListView;
+    private ListView list;
 
     private OnFragmentInteractionListener mListener;
 
@@ -60,17 +59,28 @@ public class ContactsFragment extends ListFragment {
             }
         }
 
-        // Set the adapter
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+        list = (ListView) view.findViewById(android.R.id.list);
+        list.setVisibility(View.VISIBLE);
+        container.setVisibility(View.VISIBLE);
+        list.setAdapter(mAdapter);
 
-//        list = (ListView) view.findViewById(R.id.contactsList);
-//        mAdapter = new ContactsListAdapter();
-//        list.setAdapter(mAdapter);
+        setListAdapter(mAdapter);
+
+        // Set the adapter
+       // mListView = (AbsListView) view.findViewById(android.R.id.list);
+       // mListView.setVisibility(View.VISIBLE);
+       // ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         return view;
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        if (null != mListener) {
+        }
+    }
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
@@ -78,9 +88,12 @@ public class ContactsFragment extends ListFragment {
     }
 
     class ContactsListAdapter extends BaseAdapter {
+        private TextView txtName;
+        private Button btnAddContact;
 
         @Override
         public int getCount() {
+            Log.d("ContactsSize", String.valueOf(contacts.size()));
             return contacts.size();
         }
 
@@ -95,13 +108,14 @@ public class ContactsFragment extends ListFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            Log.d("TAG", "Enter getView!!!");
             if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.contact_row_layout, null);
             }
 
-            TextView txtName = (TextView) convertView.findViewById(R.id.contactName);
-            Button btnAddContact = (Button) convertView.findViewById(R.id.btnAddContact);
+            txtName = (TextView) convertView.findViewById(R.id.contactName);
+            btnAddContact = (Button) convertView.findViewById(R.id.btnAddContact);
 
             String currContact = contacts.get(position);
 

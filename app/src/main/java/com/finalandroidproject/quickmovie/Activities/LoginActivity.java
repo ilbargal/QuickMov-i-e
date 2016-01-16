@@ -222,17 +222,17 @@ public class LoginActivity extends Activity {
             //showProgress(false);
 
             // User successfully login
-         //   if (user != null) {
+            if (user != null) {
                 // Go to main activity
                 Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(mainActivity);
                 finish();
 
-          //  } else {
-          //      showProgress(false);
-          //      mPasswordView.setError(getString(R.string.error_incorrect_password));
-          //      mPasswordView.requestFocus();
-          //  }
+            } else {
+                showProgress(false);
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.requestFocus();
+            }
         }
 
         @Override
