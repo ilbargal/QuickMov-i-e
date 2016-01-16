@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.finalandroidproject.quickmovie.Fragments.ContactsFragment;
 import com.finalandroidproject.quickmovie.Fragments.FriendFragment;
 import com.finalandroidproject.quickmovie.Fragments.InvitationFragment;
 import com.finalandroidproject.quickmovie.Fragments.MovieFragment;

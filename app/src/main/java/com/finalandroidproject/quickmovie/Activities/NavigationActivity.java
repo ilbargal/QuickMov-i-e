@@ -12,6 +12,7 @@ import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.Movie;
 import com.finalandroidproject.quickmovie.Model.MovieInvitation;
 import com.finalandroidproject.quickmovie.R;
+import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 
 import java.util.List;
 
@@ -27,7 +28,8 @@ public class NavigationActivity extends Activity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        Fragment currFragment = createSelectMovieNavigationFragment(null, null);
+        Movie currMovie = (Movie) IntentHelper.getObjectForKey("movie");
+        Fragment currFragment = createSelectMovieNavigationFragment(currMovie, null);
         fragmentTransaction.add(R.id.frgNavigationContainer, currFragment);
         fragmentTransaction.commit();
     }

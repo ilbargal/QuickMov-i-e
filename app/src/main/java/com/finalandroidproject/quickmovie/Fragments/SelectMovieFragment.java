@@ -46,17 +46,17 @@ public class SelectMovieFragment extends Fragment {
 
     public void initalize(View currView) {
         //Movie myMovie = new MovieDAL().getMovieByName("bla bla");
-        Movie myMovie = new Movie("משימה בלתי אפשרית 5", "משימה בלתי אפשרית 5 הוא סרט ממש טוב עם טום קרוז. לכו לראות!", "5", "אימה", null, "https://upload.wikimedia.org/wikipedia/he/6/63/Mission_Impossible_-_Rogue_Nation.jpg");
         final List<Friend> friends = new ArrayList<Friend>();
 
-        if (myMovie != null) {
+        if (currMovie != null) {
+
             TextView movieName = (TextView) currView.findViewById(R.id.lstMovies);
             TextView movieDescription = (TextView) currView.findViewById(R.id.selectionMovieDescription);
             ImageView movieImage = (ImageView) currView.findViewById(R.id.selectionMovieImage);
 
-            movieName.setText(myMovie.getName());
-            movieDescription.setText(myMovie.getDescription());
-            new DownloadImageTask(movieImage).execute(myMovie.getImagePath());
+            movieName.setText(currMovie.getName());
+            movieDescription.setText(currMovie.getDescription());
+            new DownloadImageTask(movieImage).execute(currMovie.getImagePath());
         }
 
         Button btnAddInvitation = (Button) currView.findViewById(R.id.btnCreateInvitation);

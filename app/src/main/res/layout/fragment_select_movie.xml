@@ -4,12 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layoutDirection="rtl"
+    android:scrollbars="vertical"
     tools:context="com.finalandroidproject.quickmovie.Fragments.SelectMovieFragment">
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="הזמנה לסרט שם הסרט"
-        android:textSize="60px"
+        android:text="אישור הזמנה"
+        android:textStyle="bold"
+        android:textSize="48dp"
+        android:elegantTextHeight="true"
         android:textAlignment="center"/>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -18,11 +21,13 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
             android:text="בחר סרט:"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text=""
+            android:textSize="20dp"
             android:textStyle="bold"
             android:id="@+id/lstMovies" />
     </LinearLayout>
@@ -34,6 +39,11 @@
             android:inputType="textMultiLine"
             android:id="@+id/selectionMovieDescription"
             android:minLines="6"
+            android:textSize="20dp"
+            android:textStyle="italic"
+            android:background="@drawable/back"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
             android:editable="false"
             android:gravity="top|right"
             android:layout_height="wrap_content"
@@ -50,6 +60,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textSize="20dp"
         android:text="בחר חברים:"/>
     <ListView android:id="@+id/selectionMovieFriends"
         android:layout_width="fill_parent"

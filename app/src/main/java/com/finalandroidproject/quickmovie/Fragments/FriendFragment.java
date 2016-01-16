@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.ListFragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,11 +54,13 @@ public class FriendFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 // TODO: get all users contacts and open new fragment or change the current fragment...
+
+                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
                 FragmentManager fragmentManager = getActivity().getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 ContactsFragment fragment = new ContactsFragment();
                 fragmentTransaction.replace(R.id.pager, fragment);
-                fragmentTransaction.addToBackStack("friendsTAG");
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });

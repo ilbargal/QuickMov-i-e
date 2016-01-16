@@ -2,6 +2,7 @@ package com.finalandroidproject.quickmovie.Fragments;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -17,9 +18,11 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Movie;
 import com.finalandroidproject.quickmovie.R;
+import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 
 public class MovieFragment extends Fragment implements AbsListView.OnItemClickListener {
     private OnFragmentInteractionListener mListener;
@@ -90,7 +93,7 @@ public class MovieFragment extends Fragment implements AbsListView.OnItemClickLi
             ImageView imgMovieImage = (ImageView) convertView.findViewById(R.id.imgMovieImage);
             Button btnInviteFriendToMovie = (Button) convertView.findViewById(R.id.btnInviteFriends);
 
-            Movie currMovie = Cache.Movies.get(position);
+            final Movie currMovie = Cache.Movies.get(position);
             txtMovieName.setText(currMovie.getName());
 
             // TODO : change image source
@@ -98,8 +101,9 @@ public class MovieFragment extends Fragment implements AbsListView.OnItemClickLi
             btnInviteFriendToMovie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: this
-                    //Log.d("TAG", "Invite friends to movie " + currMovie.getName());
+                    Intent selectMovieNavigationIntent = new Intent(getActivity(), NavigationActivity.class);
+                    IntentHelper.addObjectForKey("movie", currMovie);
+                    startActivity(selectMovieNavigationIntent);
                 }
             });
             return convertView;
