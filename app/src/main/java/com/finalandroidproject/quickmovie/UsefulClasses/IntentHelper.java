@@ -1,4 +1,4 @@
-package com.finalandroidproject.quickmovie;
+package com.finalandroidproject.quickmovie.UsefulClasses;
 
 import java.util.Hashtable;
 

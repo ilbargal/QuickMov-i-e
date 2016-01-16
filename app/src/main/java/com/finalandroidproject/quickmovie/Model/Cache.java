@@ -1,6 +1,8 @@
 package com.finalandroidproject.quickmovie.Model;
 
 
+import com.finalandroidproject.quickmovie.DAL.MovieDAL;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,10 +16,7 @@ public class Cache {
 
     static {
         // Add 3 sample items.
-        Movies.add(new Movie("ספקטר", "Item 1"));
-        Movies.add(new Movie("משחקי הרעב", "Item 2"));
-        Movies.add(new Movie("אושן 13", "Item 3"));
-        Friends.add(new Friend("Bar Gal", "123"));
+        Movies = new MovieDAL().getAllMovies(1, 6, true);
         Friends.add(new Friend("נופר פיאנקו", "123"));
         Invitations.add(new MovieInvitation(1, new Friend("נופר פיאנקו", "123"), new Friend("Bar Gal", "123"),new Movie("משחקי הרעב", "Item 2"),"סינמה סיטי", new Date(2016, 1,1)));
     }

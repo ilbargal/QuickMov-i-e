@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
 import com.finalandroidproject.quickmovie.IntentHelper;
+import com.finalandroidproject.quickmovie.MainActivity;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.R;
@@ -53,12 +54,13 @@ public class FriendFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 // TODO: get all users contacts and open new fragment or change the current fragment...
-                FragmentManager fragmentManager = getActivity().getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                ContactsFragment fragment = new ContactsFragment();
-                fragmentTransaction.replace(R.id.pager, fragment);
-                fragmentTransaction.addToBackStack("friendsTAG");
-                fragmentTransaction.commit();
+                MainActivity.mViewPager.setCurrentItem(3, true);
+//                FragmentManager fragmentManager = getActivity().getFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                ContactsFragment fragment = new ContactsFragment();
+//                fragmentTransaction.replace(R.id.pager, fragment);
+//                fragmentTransaction.addToBackStack("friendsTAG");
+//                fragmentTransaction.commit();
             }
         });
 

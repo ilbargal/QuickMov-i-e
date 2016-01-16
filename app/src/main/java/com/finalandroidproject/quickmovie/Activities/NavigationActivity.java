@@ -5,15 +5,20 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.finalandroidproject.quickmovie.Fragments.SelectMovieFragment;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.Movie;
+import com.finalandroidproject.quickmovie.Model.MovieInvitation;
 import com.finalandroidproject.quickmovie.R;
+import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 
 import java.util.List;
 
 public class NavigationActivity extends Activity {
+
+    public InvitationCreateListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +28,8 @@ public class NavigationActivity extends Activity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        Fragment currFragment = createSelectMovieNavigationFragment(null, null);
+        Movie currMovie = (Movie) IntentHelper.getObjectForKey("movie");
+        Fragment currFragment = createSelectMovieNavigationFragment(currMovie, null);
         fragmentTransaction.add(R.id.frgNavigationContainer, currFragment);
         fragmentTransaction.commit();
     }
@@ -33,5 +39,16 @@ public class NavigationActivity extends Activity {
         fragment.friends = friends;
         fragment.currMovie = currMovie;
         return fragment;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Hi there", Toast.LENGTH_SHORT);
+        super.onBackPressed();
+
+    }
+
+    public interface InvitationCreateListener {
+        void onInvitationsCreated(Movie currMovie);
     }
 }
