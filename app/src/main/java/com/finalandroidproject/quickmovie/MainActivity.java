@@ -10,11 +10,15 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
 import com.finalandroidproject.quickmovie.Fragments.ContactsFragment;
 import com.finalandroidproject.quickmovie.Fragments.FriendFragment;
 import com.finalandroidproject.quickmovie.Fragments.InvitationFragment;
 import com.finalandroidproject.quickmovie.Fragments.MovieFragment;
+import com.finalandroidproject.quickmovie.Fragments.SelectMovieFragment;
+import com.finalandroidproject.quickmovie.Model.Movie;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
 
@@ -94,7 +98,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
-
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

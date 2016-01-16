@@ -84,8 +84,6 @@ public class LoginActivity extends Activity {
         mProgressView = findViewById(R.id.login_progress);
 
 
-        // Tests
-        //List<Movie> Movies = MovieDAL.instance.getAllMovies(0,10,false);
     }
 
     private boolean mayRequestContacts() {

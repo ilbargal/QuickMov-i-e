@@ -18,7 +18,7 @@ import java.util.List;
 
 public class NavigationActivity extends Activity {
 
-    public InvitationCreateListener listener;
+    private SelectMovieFragment selectionMovieFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +29,8 @@ public class NavigationActivity extends Activity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         Movie currMovie = (Movie) IntentHelper.getObjectForKey("movie");
-        Fragment currFragment = createSelectMovieNavigationFragment(currMovie, null);
-        fragmentTransaction.add(R.id.frgNavigationContainer, currFragment);
+        selectionMovieFragment = createSelectMovieNavigationFragment(currMovie, null);
+        fragmentTransaction.add(R.id.frgNavigationContainer, selectionMovieFragment);
         fragmentTransaction.commit();
     }
 
@@ -39,16 +39,5 @@ public class NavigationActivity extends Activity {
         fragment.friends = friends;
         fragment.currMovie = currMovie;
         return fragment;
-    }
-
-    @Override
-    public void onBackPressed() {
-        Toast.makeText(getApplicationContext(), "Hi there", Toast.LENGTH_SHORT);
-        super.onBackPressed();
-
-    }
-
-    public interface InvitationCreateListener {
-        void onInvitationsCreated(Movie currMovie);
     }
 }
