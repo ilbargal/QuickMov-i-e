@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.ListFragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
-import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
+import com.finalandroidproject.quickmovie.IntentHelper;
+import com.finalandroidproject.quickmovie.MainActivity;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.R;
@@ -54,14 +54,13 @@ public class FriendFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 // TODO: get all users contacts and open new fragment or change the current fragment...
-
-                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
-                FragmentManager fragmentManager = getActivity().getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                ContactsFragment fragment = new ContactsFragment();
-                fragmentTransaction.replace(R.id.pager, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                MainActivity.mViewPager.setCurrentItem(3, true);
+//                FragmentManager fragmentManager = getActivity().getFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                ContactsFragment fragment = new ContactsFragment();
+//                fragmentTransaction.replace(R.id.pager, fragment);
+//                fragmentTransaction.addToBackStack("friendsTAG");
+//                fragmentTransaction.commit();
             }
         });
 

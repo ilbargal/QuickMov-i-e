@@ -19,7 +19,7 @@ import com.finalandroidproject.quickmovie.Fragments.MovieFragment;
 public class MainActivity extends Activity implements ActionBar.TabListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
+    public static ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +115,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                     return new InvitationFragment();
                 case 2:
                     return new MovieFragment();
+                case 3:
+                    return new ContactsFragment();
                 default:
                     return new MovieFragment();
             }
@@ -122,7 +124,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -134,6 +136,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                     return "הזמנות";
                 case 2:
                     return "סרטים";
+                case 3:
+                    return "אנשי קשר";
             }
             return null;
         }
