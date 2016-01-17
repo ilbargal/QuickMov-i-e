@@ -6,6 +6,8 @@ package com.finalandroidproject.quickmovie.Model;
 public class Friend {
     private String name;
 
+    private String phone;
+
     public String getPicturePath() {
         return picturePath;
     }
@@ -28,4 +30,14 @@ public class Friend {
     }
 
     private String picturePath;
+
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
 }

@@ -24,9 +24,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.finalandroidproject.quickmovie.DAL.FriendDAL;
 import com.finalandroidproject.quickmovie.DAL.MovieDAL;
 import com.finalandroidproject.quickmovie.DAL.UserDAL;
 import com.finalandroidproject.quickmovie.MainActivity;
+import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.Movie;
 import com.finalandroidproject.quickmovie.Model.User;
 import com.finalandroidproject.quickmovie.R;

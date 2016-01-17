@@ -32,10 +32,12 @@ public class UserDAL implements iUserActions {
             ParseObject poDBUser = data.get(0);
 
             String PhoneNumID = poDBUser.getString("PhoneNumID");
+            String UserID = poDBUser.getObjectId();
             String name = poDBUser.getString("Name");
 
             uUser = new User();
             uUser.setPhone(PhoneNumID);
+            uUser.setID(UserID);
             uUser.setName(name);
         }
 
