@@ -6,19 +6,29 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.finalandroidproject.quickmovie.Activities.LoginActivity">
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:text="QuickMo(v)ie"
-        android:layout_weight="4"
-        android:textAlignment="center"/>
     <!-- Login progress -->
     <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
+
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="37dp"-->
+        <!--android:text="QuickMo(v)ie"-->
+        <!--android:textAlignment="center"-->
+        <!--android:visibility="invisible"/>-->
+
+    <ImageView
+        android:layout_width="350dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/quickmovie_name" />
 
     <ScrollView android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -29,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingTop="30dp"
             android:orientation="vertical">
 
             <AutoCompleteTextView
@@ -49,6 +60,7 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
+                android:textAlignment="textEnd"
                 android:singleLine="true" />
 
             <Button

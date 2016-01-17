@@ -60,6 +60,8 @@ public class LoginActivity extends Activity {
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
 
+        mUsernameView.clearFocus();
+
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -72,7 +74,10 @@ public class LoginActivity extends Activity {
             }
         });
 
+        mPasswordView.clearFocus();
+
         mSignInButton = (Button) findViewById(R.id.sign_in_button);
+        mSignInButton.clearFocus();
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,8 +87,6 @@ public class LoginActivity extends Activity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-
-
     }
 
     private boolean mayRequestContacts() {
