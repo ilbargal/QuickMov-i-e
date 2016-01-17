@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,22 +46,17 @@ public class LoginActivity extends Activity {
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private View mProgressView;
-    private View mLoginFormView;
+    private ScrollView mLoginFormView;
     private Button mSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Parse.enableLocalDatastore(this);
-
-        Parse.initialize(this);
-
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
 
-        mUsernameView.clearFocus();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -74,10 +70,9 @@ public class LoginActivity extends Activity {
             }
         });
 
-        mPasswordView.clearFocus();
 
         mSignInButton = (Button) findViewById(R.id.sign_in_button);
-        mSignInButton.clearFocus();
+
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +80,8 @@ public class LoginActivity extends Activity {
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
+        mLoginFormView = (ScrollView)findViewById(R.id.login_form_scroll);
+
         mProgressView = findViewById(R.id.login_progress);
     }
 
