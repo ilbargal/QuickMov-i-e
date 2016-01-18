@@ -53,7 +53,14 @@ public class UserDAL implements iUserActions {
     }
 
     @Override
-    public boolean reqisterUser(User newUser) {
+    public boolean registerUser(User newUser) {
+        ParseObject newUserObject = new ParseObject("Users");
+        newUserObject.put("PhoneNumID",newUser.getPhone());
+        newUserObject.put("Name",newUser.getName());
+        newUserObject.put("ProfilePic",newUser.getProfilePic());
+        newUserObject.put("Password",newUser.getPassword());
+
+        newUserObject.saveInBackground();
         return false;
     }
 }

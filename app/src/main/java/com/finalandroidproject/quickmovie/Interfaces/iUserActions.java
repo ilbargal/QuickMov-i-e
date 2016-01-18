@@ -8,5 +8,5 @@ import com.parse.ParseException;
  */
 public interface iUserActions {
    User loginUser(String Phone, String Password) throws ParseException;
-   boolean reqisterUser(User newUser);
+   boolean registerUser(User newUser);
 }
