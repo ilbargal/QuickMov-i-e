@@ -53,5 +53,13 @@ public class User {
         this.ID = ID;
     }
 
-    //private List<Person> friends;
+    public User(){};
+
+    public User(String ID, String phone, String name, String password, List<Friend> friends) {
+        this.ID = ID;
+        this.phone = phone;
+        this.name = name;
+        this.password = password;
+        this.friends = friends;
+    }
 }

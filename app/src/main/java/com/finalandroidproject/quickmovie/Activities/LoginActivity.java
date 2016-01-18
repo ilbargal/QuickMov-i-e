@@ -32,6 +32,7 @@ import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.Movie;
 import com.finalandroidproject.quickmovie.Model.User;
 import com.finalandroidproject.quickmovie.R;
+import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 import com.parse.Parse;
 import com.parse.ParseException;
 
@@ -229,6 +230,7 @@ public class LoginActivity extends Activity {
             // User successfully login
             if (user != null) {
                 // Go to main activity
+                IntentHelper.addObjectForKey("currentUser", user);
                 Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(mainActivity);
                 finish();

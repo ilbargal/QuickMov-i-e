@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.finalandroidproject.quickmovie.Fragments.SelectMovieFragment;
@@ -25,6 +26,7 @@ public class NavigationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
+        LinearLayout layout = (LinearLayout) findViewById(R.id.frgNavigationContainer);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
