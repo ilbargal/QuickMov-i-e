@@ -57,7 +57,6 @@ public class SelectMovieFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_select_movie, container, false);
-        view.canScrollVertically(1);
         friends = new ArrayList<Friend>();
         friends.add((Friend) IntentHelper.getObjectForKey("friend"));
         initalize(view);
