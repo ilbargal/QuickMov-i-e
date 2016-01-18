@@ -22,6 +22,7 @@ import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Movie;
 import com.finalandroidproject.quickmovie.R;
+import com.finalandroidproject.quickmovie.UsefulClasses.DownloadImageTask;
 import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 
 public class MovieFragment extends Fragment implements AbsListView.OnItemClickListener {
@@ -96,7 +97,7 @@ public class MovieFragment extends Fragment implements AbsListView.OnItemClickLi
             final Movie currMovie = Cache.Movies.get(position);
             txtMovieName.setText(currMovie.getName());
 
-            // TODO : change image source
+            new DownloadImageTask(imgMovieImage).execute(currMovie.getImagePath());
 
             btnInviteFriendToMovie.setOnClickListener(new View.OnClickListener() {
                 @Override
