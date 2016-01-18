@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.finalandroidproject.quickmovie.DAL.FriendDAL;
+import com.finalandroidproject.quickmovie.DAL.InvitationDAL;
 import com.finalandroidproject.quickmovie.DAL.MovieDAL;
 import com.finalandroidproject.quickmovie.DAL.UserDAL;
 import com.finalandroidproject.quickmovie.MainActivity;
@@ -102,9 +103,10 @@ public class LoginActivity extends Activity {
     private void tryLogin() {
 //        User user = null;
 //        try {
-//            user = UserDAL.instance.loginUser("0","123456");
-//            Friend newFriend = new Friend("ASBo5GOYsh","","");
-//            FriendDAL.instance.addFriendtoUser(user, newFriend);
+////            user = UserDAL.instance.loginUser("0","123456");
+////            InvitationDAL.instance.getMySendInvitations(user);
+//            //Friend newFriend = new Friend("ASBo5GOYsh","","");
+//            //FriendDAL.instance.addFriendtoUser(user, newFriend);
 //        } catch (ParseException e) {
 //            e.printStackTrace();
 //        }

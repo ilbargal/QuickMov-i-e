@@ -53,17 +53,7 @@ public class FriendDAL implements IFriendActions {
                 FriendObject.pinInBackground("Users");
             }
 
-            String PhoneNumID = FriendObject.getString("PhoneNumID");
-            String UserID = FriendObject.getObjectId();
-            String name = FriendObject.getString("Name");
-            ParseFile ProfilePic = FriendObject.getParseFile("ProfilePic");
-
-            Friend fFriend = new Friend(UserID,PhoneNumID,name);
-            if(ProfilePic != null) {
-                fFriend.setProfilePic(ProfilePic.getUrl());
-            }
-
-            arrFriends.add(fFriend);
+            arrFriends.add(Friend.createFriendFromObject(FriendObject));
         }
 
         return arrFriends;
