@@ -11,7 +11,26 @@ public class User {
     private String phone;
     private String name;
     private String password;
+    private String ProfilePic;
+    private String friendTableID;
     private List<Friend> friends;
+
+
+    public String getFriendTableID() {
+        return friendTableID;
+    }
+
+    public void setFriendTableID(String friendTableID) {
+        this.friendTableID = friendTableID;
+    }
+
+    public String getProfilePic() {
+        return ProfilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        ProfilePic = profilePic;
+    }
 
     public List<Friend> getFriends() {
         return friends;

@@ -3,10 +3,12 @@ package com.finalandroidproject.quickmovie.DAL;
 import com.finalandroidproject.quickmovie.Interfaces.IFriendActions;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.User;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,29 +31,42 @@ public class FriendDAL implements IFriendActions {
 
         try {
             List<ParseObject> data = query.find();
-
-            List<Friend> arrFriends = new ArrayList<Friend>();
-            for (ParseObject FriendObject : data) {
-                if (true) {
-                    FriendObject.pinInBackground("Friends");
-                }
-
-                ParseFile pic = FriendObject.getParseFile("FriendPic");
-                String picURL = "";
-                if(pic != null) {
-                    picURL = FriendObject.getParseFile("FriendPic").getUrl();
-                }
-                Friend fFriend = new Friend(FriendObject.getString("FriendName"),picURL);
-                fFriend.setPhone(FriendObject.getString("FriendPhone"));
-
-                arrFriends.add(fFriend);
+            if(data.size() == 1) {
+                List<Friend> Friends = getFriendsByRelation(data.get(0).getRelation("FriendsID").getQuery());
+                user.setFriends(Friends);
+                user.setFriendTableID(data.get(0).getObjectId());
+                return Friends;
             }
-
-            return arrFriends;
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         return null;
+    }
+
+    private List<Friend> getFriendsByRelation(ParseQuery query) throws ParseException {
+        List<ParseObject> data = query.find();
+
+        List<Friend> arrFriends = new ArrayList<Friend>();
+        for (ParseObject FriendObject : data) {
+            if (true) {
+                FriendObject.pinInBackground("Users");
+            }
+
+            String PhoneNumID = FriendObject.getString("PhoneNumID");
+            String UserID = FriendObject.getObjectId();
+            String name = FriendObject.getString("Name");
+            ParseFile ProfilePic = FriendObject.getParseFile("ProfilePic");
+
+            Friend fFriend = new Friend(UserID,PhoneNumID,name);
+            if(ProfilePic != null) {
+                fFriend.setProfilePic(ProfilePic.getUrl());
+            }
+
+            arrFriends.add(fFriend);
+        }
+
+        return arrFriends;
     }
 
     @Override
@@ -64,14 +79,33 @@ public class FriendDAL implements IFriendActions {
 
     @Override
     public boolean addFriendstoUser(User user, List<Friend> newFriends) {
-        for (Friend newFriend : newFriends) {
-            ParseObject Friend = new ParseObject("Friends");
-            Friend.put("UserID",ParseObject.createWithoutData("Users", user.getID()));
-            Friend.put("FriendName",newFriend.getName());
+        if(user.getFriendTableID() != null) {
+            for (final Friend newFriend : newFriends) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Friends");
 
-            Friend.saveInBackground();
+                query.getInBackground(user.getFriendTableID(),new GetCallback<ParseObject>() {
+                    public void done(ParseObject FriendObject, ParseException e) {
+                        if (e == null) {
+                            // Now let's update it with some new data. In this case, only cheatMode and score
+                            // will get sent to the Parse Cloud. playerName hasn't changed.
+                            FriendObject.getRelation("FriendsID").add(ParseObject.createWithoutData("Users", newFriend.getID()));
+                            FriendObject.saveInBackground();
+                        }
+                    }
+                });
+            }
+
+            return true;
         }
+        else
+        {
+            ParseObject Friend = new ParseObject("Friends");
+            Friend.put("UserID", ParseObject.createWithoutData("Users", user.getID()));
+            Friend.getRelation("FriendsID").add(ParseObject.createWithoutData("Users", newFriends.get(0).getID()));
+            Friend.saveInBackground();
+            newFriends.remove(0);
 
-        return false;
+            return addFriendstoUser(user, newFriends);
+        }
     }
 }

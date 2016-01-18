@@ -148,7 +148,7 @@ public class SelectMovieFragment extends Fragment {
                 for (Friend currFriend : friends)
                 {
                     invitation = new MovieInvitation(1,
-                                                     new Friend("Bar gal", "123"),
+                                                     new Friend("Bar gal", "123",""),
                                                      currFriend,
                                                      currMovie,
                                                      "גלילות",
@@ -242,7 +242,7 @@ public class SelectMovieFragment extends Fragment {
 
             if (friends.contains(currFriend))
                 btnInviteToMovie.setChecked(true);
-            new DownloadImageTask(imgFriendImage).execute(currFriend.getPicturePath());
+            new DownloadImageTask(imgFriendImage).execute(currFriend.getProfilePic());
             txtFriendName.setText(currFriend.getName());
 
             return convertView;

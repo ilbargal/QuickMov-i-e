@@ -3,6 +3,7 @@ package com.finalandroidproject.quickmovie.DAL;
 import com.finalandroidproject.quickmovie.Interfaces.iUserActions;
 import com.finalandroidproject.quickmovie.Model.User;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -34,11 +35,18 @@ public class UserDAL implements iUserActions {
             String PhoneNumID = poDBUser.getString("PhoneNumID");
             String UserID = poDBUser.getObjectId();
             String name = poDBUser.getString("Name");
+            ParseFile ProfilePic = poDBUser.getParseFile("ProfilePic");
 
             uUser = new User();
             uUser.setPhone(PhoneNumID);
             uUser.setID(UserID);
             uUser.setName(name);
+
+            if(ProfilePic != null){
+                uUser.setProfilePic(ProfilePic.getUrl());
+            }
+
+            FriendDAL.instance.getFriendsByUser(uUser);
         }
 
         return uUser;

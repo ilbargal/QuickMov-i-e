@@ -100,6 +100,15 @@ public class LoginActivity extends Activity {
     }
     
     private void tryLogin() {
+//        User user = null;
+//        try {
+//            user = UserDAL.instance.loginUser("0","123456");
+//            Friend newFriend = new Friend("ASBo5GOYsh","","");
+//            FriendDAL.instance.addFriendtoUser(user, newFriend);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+
         if (mAuthTask != null) {
             return;
         }
