@@ -93,6 +93,8 @@ public class FriendDAL implements IFriendActions {
                         }
                     }
                 });
+
+                user.getFriends().add(newFriend);
             }
 
             return true;
@@ -103,6 +105,7 @@ public class FriendDAL implements IFriendActions {
             Friend.put("UserID", ParseObject.createWithoutData("Users", user.getID()));
             Friend.getRelation("FriendsID").add(ParseObject.createWithoutData("Users", newFriends.get(0).getID()));
             Friend.saveInBackground();
+            user.getFriends().add(newFriends.get(0));
             newFriends.remove(0);
 
             return addFriendstoUser(user, newFriends);
