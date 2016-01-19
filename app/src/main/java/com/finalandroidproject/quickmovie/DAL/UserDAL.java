@@ -52,7 +52,7 @@ public class UserDAL implements iUserActions {
         return uUser;
     }
 
-    public boolean CheckIfUserExsist(User newUser) {
+    public String CheckIfUserExsist(User newUser) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Users");
         // Where PhoneNumID && Password
         query.whereEqualTo("PhoneNumID", newUser.getPhone());
@@ -65,13 +65,13 @@ public class UserDAL implements iUserActions {
 
             // Check if return one line
             if(data.size() == 1) {
-                return true;
+                return data.get(0).getObjectId();
             }
         } catch (ParseException e) {
-            return false;
+            return "";
         }
 
-        return false;
+        return "";
     }
 
     @Override

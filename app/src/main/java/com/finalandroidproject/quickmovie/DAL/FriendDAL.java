@@ -69,11 +69,25 @@ public class FriendDAL implements IFriendActions {
 
     @Override
     public boolean addFriendstoUser(User user, List<Friend> newFriends) {
-        if(user.getFriendTableID() != null) {
+        String ObjectID = "";
+
+        ParseQuery<ParseObject> queryObjectID = ParseQuery.getQuery("Friends");
+        queryObjectID.whereEqualTo("UserID",ParseObject.createWithoutData("Users", user.getID()));
+
+        try {
+            List<ParseObject> UserFriends = queryObjectID.find();
+            if(UserFriends.size() == 1) {
+                ObjectID = UserFriends.get(0).getObjectId();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(ObjectID != "") {
             for (final Friend newFriend : newFriends) {
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Friends");
 
-                query.getInBackground(user.getFriendTableID(),new GetCallback<ParseObject>() {
+                query.getInBackground(ObjectID,new GetCallback<ParseObject>() {
                     public void done(ParseObject FriendObject, ParseException e) {
                         if (e == null) {
                             // Now let's update it with some new data. In this case, only cheatMode and score

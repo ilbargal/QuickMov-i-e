@@ -135,7 +135,7 @@ public class LoginActivity extends Activity {
                     newUser.setPhone(UserName.getText().toString());
                     newUser.setPassword(Password.getText().toString());
 
-                    if(UserDAL.instance.CheckIfUserExsist(newUser)) {
+                    if(UserDAL.instance.CheckIfUserExsist(newUser) != "") {
                         AlertDialog.Builder alertDialgBuilder = new AlertDialog.Builder(me);
                         alertDialgBuilder.setNegativeButton("אישור", new DialogInterface.OnClickListener() {
                             @Override

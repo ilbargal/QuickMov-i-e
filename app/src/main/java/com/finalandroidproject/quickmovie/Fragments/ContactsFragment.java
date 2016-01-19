@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.finalandroidproject.quickmovie.DAL.FriendDAL;
 import com.finalandroidproject.quickmovie.DAL.UserDAL;
+import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.User;
 import com.finalandroidproject.quickmovie.R;
@@ -146,8 +147,10 @@ public class ContactsFragment extends ListFragment {
                 @Override
                 public void onClick(View v) {
                     Friend newFriend = contacts.get(Integer.parseInt(v.getTag().toString()));
-                    if (UserDAL.instance.CheckIfUserExsist(newFriend)) {
-                        FriendDAL.instance.addFriendtoUser((User) IntentHelper.getObjectForKey("currentUser"), newFriend);
+                    String ObjectID = UserDAL.instance.CheckIfUserExsist(newFriend);
+                    if (ObjectID != "") {
+                        newFriend.setID(ObjectID);
+                        FriendDAL.instance.addFriendtoUser((User) Cache.currentUser, newFriend);
                     } else {
                         AlertDialog.Builder alertDialgBuilder = new AlertDialog.Builder(getActivity());
                         alertDialgBuilder.setNegativeButton("אישור", new DialogInterface.OnClickListener() {

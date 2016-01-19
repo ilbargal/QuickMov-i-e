@@ -113,8 +113,10 @@ public class FriendFragment extends ListFragment {
             Button btnInviteToMovie = (Button) convertView.findViewById(R.id.btnInviteToMovie);
 
             final Friend currFriend = Cache.Friends.get(position);
+            if(currFriend.getProfilePic() != null && currFriend.getProfilePic() != "") {
+                new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendInvitationPrgBar)).execute(currFriend.getProfilePic());
+            }
 
-            new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendInvitationPrgBar)).execute(currFriend.getProfilePic());
 
             txtFriendName.setText(currFriend.getName());
             btnInviteToMovie.setText("הזמן את "  + currFriend.getName() + " לסרט");
