@@ -15,9 +15,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
+import com.finalandroidproject.quickmovie.UsefulClasses.DownloadImageTask;
 import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 import com.finalandroidproject.quickmovie.MainActivity;
 import com.finalandroidproject.quickmovie.Model.Cache;
@@ -112,7 +114,8 @@ public class FriendFragment extends ListFragment {
 
             final Friend currFriend = Cache.Friends.get(position);
 
-            // TODO: set friend image
+            new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendInvitationPrgBar)).execute(currFriend.getProfilePic());
+
             txtFriendName.setText(currFriend.getName());
             btnInviteToMovie.setText("הזמן את "  + currFriend.getName() + " לסרט");
             btnInviteToMovie.setOnClickListener(new View.OnClickListener() {

@@ -2,6 +2,7 @@ package com.finalandroidproject.quickmovie.Model;
 
 
 import com.finalandroidproject.quickmovie.DAL.FriendDAL;
+import com.finalandroidproject.quickmovie.DAL.InvitationDAL;
 import com.finalandroidproject.quickmovie.DAL.MovieDAL;
 import com.finalandroidproject.quickmovie.DAL.UserDAL;
 import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
@@ -22,6 +23,7 @@ public class Cache {
         User currentUser = (User) IntentHelper.getObjectForKey("currentUser");
         Movies = new MovieDAL().getAllMovies(0, 6, true);
         Friends = new FriendDAL().getFriendsByUser(currentUser);
+        //Invitations = new InvitationDAL().getMyRecvInvitations(currentUser);
         Invitations.add(new MovieInvitation(1, new Friend("נופר פיאנקו", "123",""), new Friend("Bar Gal", "123",""),new Movie("משחקי הרעב", "Item 2"),"סינמה סיטי", new Date(2016, 1,1)));
     }
 }

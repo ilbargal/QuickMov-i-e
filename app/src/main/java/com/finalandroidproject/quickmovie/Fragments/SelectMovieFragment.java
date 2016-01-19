@@ -18,19 +18,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Cinema;
+import com.finalandroidproject.quickmovie.Model.User;
 import com.finalandroidproject.quickmovie.UsefulClasses.DownloadImageTask;
 import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.Movie;
 import com.finalandroidproject.quickmovie.Model.MovieInvitation;
 import com.finalandroidproject.quickmovie.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,10 +111,11 @@ public class SelectMovieFragment extends Fragment {
                 Toast.makeText(getActivity(), "הזמנותיך עבור הסרט "  + currMovie.getName() + " נשלחו לחבריך", Toast.LENGTH_LONG).show();
             }
         };
+
         final List<Friend> friends = new ArrayList<Friend>();
         // For testing
-        if (currMovie == null) {
-            currMovie = new Movie("משימה בלתי אפשרית 5","1\r\n2\n3\n4\n5\n6\n7\n8\n9\n10\n112" , 8.4, "פעולה", null, "https://upload.wikimedia.org/wikipedia/he/6/63/Mission_Impossible_-_Rogue_Nation.jpg");
+        if (currMovie == null && !Cache.Movies.isEmpty()) {
+            currMovie = Cache.Movies.get(0);
         }
 
         setMovieDetails(currView, currMovie);
@@ -143,11 +144,11 @@ public class SelectMovieFragment extends Fragment {
             public void onClick(View v) {
                 // Save invitaion and get back
                 MovieInvitation invitation;
-
+                User currentUser = (User) IntentHelper.getObjectForKey("currentUser");
                 for (Friend currFriend : friends)
                 {
-                    invitation = new MovieInvitation(1,
-                                                     new Friend("Bar gal", "123",""),
+                    invitation = new MovieInvitation(new Date().getTimezoneOffset(),
+                                                    new Friend(currentUser.getID(), currentUser.getPhone(), currentUser.getName()) ,
                                                      currFriend,
                                                      currMovie,
                                                      "גלילות",
@@ -172,11 +173,10 @@ public class SelectMovieFragment extends Fragment {
         movieName.setText(currMovie.getName());
         movieDescription.setMovementMethod(new ScrollingMovementMethod());
         movieDescription.setText(currMovie.getDescription());
-        new DownloadImageTask(movieImage).execute(currMovie.getImagePath());
+        new DownloadImageTask(movieImage, (ProgressBar) currView.findViewById(R.id.selectMovieProgressbar)).execute(currMovie.getImagePath());
 
         movieRating.setText(String.valueOf(currMovie.getRating()) + " / 10");
         paintMovieByRating(movieRating, currMovie.getRating());
-        //movieSelectedCinema.setText(currMovie.getCinemas().get(1));
         movieSelectedCinema.setText("סינימה סיטי גלילות");
     }
 
@@ -241,7 +241,7 @@ public class SelectMovieFragment extends Fragment {
 
             if (friends.contains(currFriend))
                 btnInviteToMovie.setChecked(true);
-            new DownloadImageTask(imgFriendImage).execute(currFriend.getProfilePic());
+            new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute(currFriend.getProfilePic());
             txtFriendName.setText(currFriend.getName());
 
             return convertView;

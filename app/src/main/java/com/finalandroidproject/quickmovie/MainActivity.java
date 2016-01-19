@@ -55,6 +55,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         // For each of the sections in the app, add a tab to the action bar.
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             actionBar.addTab(actionBar.newTab()
+                            .setIcon(mSectionsPagerAdapter.getTabIcon(i))
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
@@ -143,6 +144,20 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                     return "אנשי קשר";
             }
             return null;
+        }
+
+        public int getTabIcon(int position) {
+            switch (position) {
+                case 0:
+                    return R.mipmap.ic_face_black_24dp;
+                case 1:
+                    return R.mipmap.ic_chat_bubble_black_24dp;
+                case 2:
+                    return R.mipmap.ic_movie_black_24dp;
+                case 3:
+                    return R.mipmap.ic_account_circle_black_24dp;
+            }
+            return R.mipmap.ic_launcher;
         }
     }
 }

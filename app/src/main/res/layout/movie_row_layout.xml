@@ -8,12 +8,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/txtMovieName"
+        android:height="35dp"
         android:text="Test"/>
+    <ProgressBar
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/movieProgressBar"
+        />
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:id="@+id/imgMovieImage"
+        android:visibility="gone"
         android:src="@mipmap/ic_launcher"
         android:drawingCacheQuality="auto" />
     <Button
