@@ -53,4 +53,11 @@ public class Cinema {
         this.location = location;
     }
 
+    public Cinema() {}
+
+    public Cinema(String objectID, String name, Location location) {
+        this.objectID = objectID;
+        Name = name;
+        this.location = location;
+    }
 }

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -22,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.finalandroidproject.quickmovie.DAL.InvitationDAL;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Cinema;
 import com.finalandroidproject.quickmovie.Model.User;
@@ -32,6 +34,7 @@ import com.finalandroidproject.quickmovie.Model.Movie;
 import com.finalandroidproject.quickmovie.Model.MovieInvitation;
 import com.finalandroidproject.quickmovie.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +42,7 @@ import java.util.List;
 public class SelectMovieFragment extends Fragment {
 
     public Movie currMovie;
-    public List<Friend> friends;
+    public static List<Friend> friends;
     public InvitationCreateListener listener;
     public AlertDialog movieDialog;
     public AlertDialog cinemasDialog;
@@ -48,6 +51,7 @@ public class SelectMovieFragment extends Fragment {
     private final String CHOOSE_MOVIE_DIALOG_TITLE = "בחר סרט";
     private final int HIGH_RATING = 8;
     private final int MIDDLE_RATING = 4;
+
 
     public SelectMovieFragment() {
     }
@@ -141,25 +145,24 @@ public class SelectMovieFragment extends Fragment {
         });
 
         AbsListView mListView = (AbsListView) currView.findViewById(R.id.selectionMovieFriends);
-        mListView.setAdapter(new FriendInvitationListAdapter());
-
+        mListView.setAdapter(new FriendInvitationListAdapter(this));
         Button btnAddInvitation = (Button) currView.findViewById(R.id.btnCreateInvitation);
         btnAddInvitation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Save invitaion and get back
                 MovieInvitation invitation;
-                User currentUser = (User) IntentHelper.getObjectForKey("currentUser");
-                for (Friend currFriend : friends)
+                for (Friend currFriend : SelectMovieFragment.friends)
                 {
                     invitation = new MovieInvitation(new Date().getTimezoneOffset(),
-                                                    new Friend(currentUser.getID(), currentUser.getPhone(), currentUser.getName()) ,
                                                      currFriend,
+                                                     new Friend(Cache.currentUser.getID(), Cache.currentUser.getPhone(), Cache.currentUser.getName()) ,
                                                      currMovie,
-                                                     new Cinema("יס פלאנט"),
+                                                     new Cinema("123", "סינימה סיטי גלילות", new Location("35,32")),
                                                      new Date());
 
-                    // Save invitation
+                    new InvitationDAL().addNewInvitation(invitation);
+                    Cache.Invitations.add(invitation);
                 }
                 getActivity().finish();
                 listener.onInvitationsCreated(currMovie);
@@ -200,6 +203,11 @@ public class SelectMovieFragment extends Fragment {
     }
 
     class FriendInvitationListAdapter extends BaseAdapter {
+        private SelectMovieFragment currFrag;
+
+        public FriendInvitationListAdapter(SelectMovieFragment frag) {
+            currFrag = frag;
+        }
 
         @Override
         public int getCount() {
@@ -227,27 +235,28 @@ public class SelectMovieFragment extends Fragment {
             TextView txtFriendName = (TextView) convertView.findViewById(R.id.friendName);
             CheckBox btnInviteToMovie = (CheckBox) convertView.findViewById(R.id.isFriendInvited);
 
+            btnInviteToMovie.setChecked(false);
+            final Friend currFriend = Cache.Friends.get(position);
+
             btnInviteToMovie.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        if (!friends.contains(Cache.Friends.get(position))) {
-                            friends.add(Cache.Friends.get(position));
+                        if (!SelectMovieFragment.friends.contains(Cache.Friends.get(position))) {
+                            SelectMovieFragment.friends.add(Cache.Friends.get(position));
                         }
                     }
                     else {
-                        if (friends.contains(Cache.Friends.get(position))) {
-                            friends.remove(position);
+                        if (SelectMovieFragment.friends.contains(Cache.Friends.get(position))) {
+                            SelectMovieFragment.friends.remove(position);
                         }
                     }
                 }
             });
 
-            btnInviteToMovie.setChecked(false);
-            final Friend currFriend = Cache.Friends.get(position);
-
-            if (friends.contains(currFriend))
+            if (SelectMovieFragment.friends.contains(currFriend))
                 btnInviteToMovie.setChecked(true);
+
             new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute(currFriend.getProfilePic());
             txtFriendName.setText(currFriend.getName());
 
