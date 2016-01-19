@@ -7,11 +7,11 @@ public class MovieInvitation {
     private Friend fromFriend;
     private Friend toFriend;
     private Movie movie;
-    private String cinema;
+    private Cinema cinema;
     private Date invitationDate;
     private boolean isAccepted;
 
-    public MovieInvitation(int id, Friend fromFriend, Friend toFriend, Movie movie, String cinema, Date invitationDate) {
+    public MovieInvitation(int id, Friend fromFriend, Friend toFriend, Movie movie, Cinema cinema, Date invitationDate) {
         this.id = id;
         this.fromFriend = fromFriend;
         this.toFriend = toFriend;
@@ -53,11 +53,11 @@ public class MovieInvitation {
         this.movie = movie;
     }
 
-    public String getCinema() {
+    public Cinema getCinema() {
         return cinema;
     }
 
-    public void setCinema(String cinema) {
+    public void setCinema(Cinema cinema) {
         this.cinema = cinema;
     }
 

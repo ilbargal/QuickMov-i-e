@@ -1,5 +1,8 @@
 package com.finalandroidproject.quickmovie.Model;
 
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +23,24 @@ public class Movie {
         this.name = name;
         this.imagePath = imagePath;
         this.cinemas = new ArrayList<Cinema>();
+    }
+
+    public static Movie createMovieFromObject(ParseObject object) {
+        Movie mMovie = new Movie();
+        String name = object.getString("Name");
+        String ganre = object.getString("Genre");
+        String description = object.getString("Description");
+        double rating = object.getDouble("Rating");
+        String image = object.getParseFile("Image").getUrl();
+
+        mMovie = new Movie();
+        mMovie.setName(name);
+        mMovie.setGanre(ganre);
+        mMovie.setDescription(description);
+        mMovie.setRating(rating);
+        mMovie.setImagePath(image);
+
+        return mMovie;
     }
 
 
