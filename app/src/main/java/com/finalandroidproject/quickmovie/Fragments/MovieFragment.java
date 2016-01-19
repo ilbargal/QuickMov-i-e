@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
@@ -97,7 +98,8 @@ public class MovieFragment extends Fragment implements AbsListView.OnItemClickLi
             final Movie currMovie = Cache.Movies.get(position);
             txtMovieName.setText(currMovie.getName());
 
-            new DownloadImageTask(imgMovieImage).execute(currMovie.getImagePath());
+            new DownloadImageTask(imgMovieImage, (ProgressBar) convertView.findViewById(R.id.movieProgressBar))
+                    .execute(currMovie.getImagePath());
 
             btnInviteFriendToMovie.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -4,15 +4,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import java.io.InputStream;
 
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
+    ProgressBar progressBar;
 
-    public DownloadImageTask(ImageView bmImage) {
+    public DownloadImageTask(ImageView bmImage, ProgressBar progressBar)
+    {
         this.bmImage = bmImage;
+        this.progressBar = progressBar;
+        this.progressBar.setVisibility(View.VISIBLE);
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -29,6 +35,8 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
+        this.progressBar.setVisibility(View.GONE);
+        bmImage.setVisibility(View.VISIBLE);
         bmImage.setImageBitmap(result);
     }
 }

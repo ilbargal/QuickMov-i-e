@@ -25,7 +25,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:icon="@drawable/quickmovie_name">
         </activity>
         <activity
             android:name=".Activities.LoginActivity"

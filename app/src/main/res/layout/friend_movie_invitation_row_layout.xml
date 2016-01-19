@@ -8,11 +8,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/isFriendInvited" />
+    <ProgressBar
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layoutDirection="rtl"
+        android:layout_gravity="right"
+        android:id="@+id/friendProgressbar" />
     <ImageView
         android:id="@+id/imgFriend"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@mipmap/ic_launcher"
+        android:visibility="gone"
         android:layoutDirection="rtl"
         android:layout_gravity="right" />
     <TextView

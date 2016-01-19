@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,8 +114,8 @@ public class SelectMovieFragment extends Fragment {
         };
         final List<Friend> friends = new ArrayList<Friend>();
         // For testing
-        if (currMovie == null) {
-            currMovie = new Movie("משימה בלתי אפשרית 5","1\r\n2\n3\n4\n5\n6\n7\n8\n9\n10\n112" , 8.4, "פעולה", null, "https://upload.wikimedia.org/wikipedia/he/6/63/Mission_Impossible_-_Rogue_Nation.jpg");
+        if (currMovie == null && !Cache.Movies.isEmpty()) {
+            currMovie = Cache.Movies.get(0);
         }
 
         setMovieDetails(currView, currMovie);
@@ -172,7 +173,7 @@ public class SelectMovieFragment extends Fragment {
         movieName.setText(currMovie.getName());
         movieDescription.setMovementMethod(new ScrollingMovementMethod());
         movieDescription.setText(currMovie.getDescription());
-        new DownloadImageTask(movieImage).execute(currMovie.getImagePath());
+        new DownloadImageTask(movieImage, (ProgressBar) currView.findViewById(R.id.selectMovieProgressbar)).execute(currMovie.getImagePath());
 
         movieRating.setText(String.valueOf(currMovie.getRating()) + " / 10");
         paintMovieByRating(movieRating, currMovie.getRating());
@@ -241,7 +242,7 @@ public class SelectMovieFragment extends Fragment {
 
             if (friends.contains(currFriend))
                 btnInviteToMovie.setChecked(true);
-            new DownloadImageTask(imgFriendImage).execute(currFriend.getProfilePic());
+            new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute(currFriend.getProfilePic());
             txtFriendName.setText(currFriend.getName());
 
             return convertView;
