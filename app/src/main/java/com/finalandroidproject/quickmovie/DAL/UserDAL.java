@@ -60,7 +60,7 @@ public class UserDAL implements iUserActions {
         newUserObject.put("ProfilePic",newUser.getProfilePic());
         newUserObject.put("Password",newUser.getPassword());
 
-        newUserObject.saveInBackground();
+        newUserObject.saveEventually();
         return false;
     }
 }

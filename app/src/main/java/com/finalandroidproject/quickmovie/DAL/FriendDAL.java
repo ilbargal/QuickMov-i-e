@@ -79,7 +79,7 @@ public class FriendDAL implements IFriendActions {
                             // Now let's update it with some new data. In this case, only cheatMode and score
                             // will get sent to the Parse Cloud. playerName hasn't changed.
                             FriendObject.getRelation("FriendsID").add(ParseObject.createWithoutData("Users", newFriend.getID()));
-                            FriendObject.saveInBackground();
+                            FriendObject.saveEventually();
                         }
                     }
                 });

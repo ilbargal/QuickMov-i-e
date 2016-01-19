@@ -130,7 +130,7 @@ public class InvitationDAL implements IInvitationActions {
         newInvitationObject.put("IsAccepted",invitation.isAccepted());
         newInvitationObject.put("ID",invitation.getId());
 
-        newInvitationObject.saveInBackground();
+        newInvitationObject.saveEventually();
 
     }
 
@@ -152,7 +152,7 @@ public class InvitationDAL implements IInvitationActions {
                     newInvitationObject.put("IsAccepted", invitation.isAccepted());
                     newInvitationObject.put("ID", invitation.getId());
 
-                    newInvitationObject.saveInBackground();
+                    newInvitationObject.saveEventually();
                 }
             }
         });
@@ -169,7 +169,7 @@ public class InvitationDAL implements IInvitationActions {
                     ParseObject newInvitationObject = new ParseObject("Invitations");
                     newInvitationObject.setObjectId(invitationObject.get(0).getObjectId());
 
-                    newInvitationObject.deleteInBackground();
+                    newInvitationObject.deleteEventually();
                 }
             }
         });
