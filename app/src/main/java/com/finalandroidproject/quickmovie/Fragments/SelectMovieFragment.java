@@ -44,6 +44,11 @@ public class SelectMovieFragment extends Fragment {
     public AlertDialog movieDialog;
     public AlertDialog cinemasDialog;
 
+    private final String CHOOSE_CINEMA_DIALOG_TITLE = "בחר אולם קולנוע";
+    private final String CHOOSE_MOVIE_DIALOG_TITLE = "בחר סרט";
+    private final int HIGH_RATING = 8;
+    private final int MIDDLE_RATING = 4;
+
     public SelectMovieFragment() {
     }
 
@@ -71,7 +76,7 @@ public class SelectMovieFragment extends Fragment {
             moviesNames.add(movie.getName());
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("בחר סרט")
+        builder.setTitle(CHOOSE_MOVIE_DIALOG_TITLE)
                 .setItems(moviesNames.toArray(new CharSequence[moviesNames.size()]), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         currMovie = Cache.Movies.get(which);
@@ -87,7 +92,7 @@ public class SelectMovieFragment extends Fragment {
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("בחר אולם קולנוע");
+        builder.setTitle(CHOOSE_CINEMA_DIALOG_TITLE);
         if (currMovie.getCinemas() != null) {
             for (Cinema cinema : currMovie.getCinemas()) {
                 cinemas.add(cinema.getName());
@@ -173,6 +178,7 @@ public class SelectMovieFragment extends Fragment {
         movieName.setText(currMovie.getName());
         movieDescription.setMovementMethod(new ScrollingMovementMethod());
         movieDescription.setText(currMovie.getDescription());
+        movieImage.setVisibility(View.GONE);
         new DownloadImageTask(movieImage, (ProgressBar) currView.findViewById(R.id.selectMovieProgressbar)).execute(currMovie.getImagePath());
 
         movieRating.setText(String.valueOf(currMovie.getRating()) + " / 10");
@@ -181,9 +187,9 @@ public class SelectMovieFragment extends Fragment {
     }
 
     private void paintMovieByRating(TextView textView, double rating) {
-        if (rating >= 8)
+        if (rating >= HIGH_RATING)
             textView.setTextColor(Color.GREEN);
-        else if (rating < 8 && rating > 4)
+        else if (rating < HIGH_RATING && rating > MIDDLE_RATING)
             textView.setTextColor(Color.YELLOW);
         else
             textView.setTextColor(Color.RED);
@@ -236,6 +242,7 @@ public class SelectMovieFragment extends Fragment {
                     }
                 }
             });
+
             btnInviteToMovie.setChecked(false);
             final Friend currFriend = Cache.Friends.get(position);
 
