@@ -102,17 +102,19 @@ public class LoginActivity extends Activity {
     }
     
     private void tryLogin() {
-        User user = null;
-        try {
-            user = UserDAL.instance.loginUser("0","123456");
-            List<MovieInvitation> list = InvitationDAL.instance.getMySendInvitations(user);
-            list.size();
-
-            //Friend newFriend = new Friend("ASBo5GOYsh","","");
-            //FriendDAL.instance.addFriendtoUser(user, newFriend);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        //MovieDAL.instance.getAllMovies(0,10,false);
+        //MovieDAL.instance.getMovieByName("משימה בלתי אפשרית 5");
+//        User user = null;
+//        try {
+//            user = UserDAL.instance.loginUser("0","123456");
+//            List<MovieInvitation> list = InvitationDAL.instance.getMySendInvitations(user);
+//            list.size();
+//
+//            //Friend newFriend = new Friend("ASBo5GOYsh","","");
+//            //FriendDAL.instance.addFriendtoUser(user, newFriend);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
         if (mAuthTask != null) {
             return;
