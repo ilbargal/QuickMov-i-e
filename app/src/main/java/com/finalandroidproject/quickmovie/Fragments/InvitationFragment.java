@@ -9,11 +9,13 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.finalandroidproject.quickmovie.DAL.InvitationDAL;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.MovieInvitation;
 import com.finalandroidproject.quickmovie.R;
@@ -84,7 +86,7 @@ public class InvitationFragment extends ListFragment {
             TextView txtMovieDetails = (TextView) convertView.findViewById(R.id.txtMovieDetails);
             CheckBox checkIsAccepted = (CheckBox) convertView.findViewById(R.id.checkIsAccepted);
 
-            MovieInvitation currInvitation = Cache.Invitations.get(position);
+            final MovieInvitation currInvitation = Cache.Invitations.get(position);
 
             // TODO: set friend image
 
@@ -127,11 +129,13 @@ public class InvitationFragment extends ListFragment {
             txtMovieDetails.setText(currInvitation.getFromFriend().getName() + " הזמין אותך לסרט: " +
                     currInvitation.getMovie().getName() + "\n" + " בקולנוע: " + currInvitation.getCinema() +
                     "\n בתאריך: " + movieDate + " בשעה: " + movieTime);
-            checkIsAccepted.setSelected(false);
-            checkIsAccepted.setOnClickListener(new View.OnClickListener() {
+            checkIsAccepted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    // TODO: send the invitator message that the user accepted the invitation
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        currInvitation.setIsAccepted(true);
+                        new InvitationDAL().updateInvitation(currInvitation);
+                    }
                 }
             });
             return convertView;
