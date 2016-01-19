@@ -20,6 +20,8 @@ import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.MovieInvitation;
 import com.finalandroidproject.quickmovie.R;
 
+import java.text.SimpleDateFormat;
+
 public class InvitationFragment extends ListFragment {
     private AbsListView mListView;
     private InvitationListAdapter mAdapter;
@@ -90,44 +92,14 @@ public class InvitationFragment extends ListFragment {
 
             // TODO: set friend image
 
-            String day = "";
-            String month = "";
-            String hour = "";
-            String minuts = "";
+            SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy");
+            String movieDate = sdfDate.format(currInvitation.getInvitationDate());
 
-            if (currInvitation.getInvitationDate().getDay() < 10){
-                day = "0" + currInvitation.getInvitationDate().getDay();
-            }
-            else {
-                day = String.valueOf(currInvitation.getInvitationDate().getDay());
-            }
-
-            if (currInvitation.getInvitationDate().getMonth() < 10){
-                month = "0" + currInvitation.getInvitationDate().getMonth();
-            }
-            else {
-                month = String.valueOf(currInvitation.getInvitationDate().getMonth());
-            }
-
-            if (currInvitation.getInvitationDate().getHours() < 10){
-                hour = "0" + currInvitation.getInvitationDate().getHours();
-            }
-            else {
-                hour = String.valueOf(currInvitation.getInvitationDate().getHours());
-            }
-
-            if (currInvitation.getInvitationDate().getMinutes() < 10){
-                minuts = "0" + currInvitation.getInvitationDate().getMinutes();
-            }
-            else {
-                minuts = String.valueOf(currInvitation.getInvitationDate().getMinutes());
-            }
-
-            String movieDate = day + "/" + month + "/" + currInvitation.getInvitationDate().getYear();
-            String movieTime = hour + ":" + minuts;
+            SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
+            String movieTime = sdfTime.format(currInvitation.getInvitationDate());
 
             txtMovieDetails.setText(currInvitation.getFromFriend().getName() + " הזמין אותך לסרט: " +
-                    currInvitation.getMovie().getName() + "\n" + " בקולנוע: " + currInvitation.getCinema() +
+                    currInvitation.getMovie().getName() + "\n" + " בקולנוע: " + currInvitation.getCinema().getName() +
                     "\n בתאריך: " + movieDate + " בשעה: " + movieTime);
             checkIsAccepted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

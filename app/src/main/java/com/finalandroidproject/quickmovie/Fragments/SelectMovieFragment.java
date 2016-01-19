@@ -150,22 +150,23 @@ public class SelectMovieFragment extends Fragment {
         btnAddInvitation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Save invitaion and get back
-                MovieInvitation invitation;
-                for (Friend currFriend : SelectMovieFragment.friends)
-                {
-                    invitation = new MovieInvitation(new Date().getTimezoneOffset(),
-                                                     currFriend,
-                                                     new Friend(Cache.currentUser.getID(), Cache.currentUser.getPhone(), Cache.currentUser.getName()) ,
-                                                     currMovie,
-                                                     new Cinema("123", "סינימה סיטי גלילות", new Location("35,32")),
-                                                     new Date());
+                if(SelectMovieFragment.friends.size() > 0) {
+                    // Save invitaion and get back
+                    MovieInvitation invitation;
+                    for (Friend currFriend : SelectMovieFragment.friends) {
+                        invitation = new MovieInvitation(new Date().getTimezoneOffset(),
+                                new Friend(Cache.currentUser.getID(), Cache.currentUser.getPhone(), Cache.currentUser.getName()),
+                                currFriend,
+                                currMovie,
+                                Cache.Cinemas.get(0),
+                                new Date());
 
-                    new InvitationDAL().addNewInvitation(invitation);
-                    Cache.Invitations.add(invitation);
+                        new InvitationDAL().addNewInvitation(invitation);
+                        Cache.Invitations.add(invitation);
+                    }
+                    getActivity().finish();
+                    listener.onInvitationsCreated(currMovie);
                 }
-                getActivity().finish();
-                listener.onInvitationsCreated(currMovie);
             }
         });
     }
@@ -183,7 +184,13 @@ public class SelectMovieFragment extends Fragment {
         movieDescription.setText(currMovie.getDescription());
         movieImage.setVisibility(View.GONE);
 
-        new DownloadImageTask(movieImage, (ProgressBar) currView.findViewById(R.id.selectMovieProgressbar)).execute(currMovie.getImagePath());
+        if(currMovie.getImagePath() != null && currMovie.getImagePath() != "") {
+            new DownloadImageTask(movieImage, (ProgressBar) currView.findViewById(R.id.selectMovieProgressbar)).execute(currMovie.getImagePath());
+        }
+        else {
+            movieImage.setImageResource(R.drawable.film);
+        }
+
 
         movieRating.setText(String.valueOf(currMovie.getRating()) + " / 10");
         paintMovieByRating(movieRating, currMovie.getRating());

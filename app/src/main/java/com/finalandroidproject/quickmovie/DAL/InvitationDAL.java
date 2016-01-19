@@ -75,7 +75,7 @@ public class InvitationDAL implements IInvitationActions {
         queryuser.whereEqualTo("objectId", user.getID());
 
         ParseQuery<ParseObject> queryInvitations = ParseQuery.getQuery("Invitations");
-        queryuser.whereEqualTo("ReceiverFriend", queryuser);
+        queryInvitations.whereMatchesQuery("ReceiverFriend", queryuser);
 
         try {
             List<ParseObject> data = queryInvitations.find();
@@ -93,11 +93,11 @@ public class InvitationDAL implements IInvitationActions {
                     SelectMovie = Movie.createMovieFromObject(dataMovie.get(0));
                 }
 
-                ParseQuery<ParseObject> queryCinema = ParseQuery.getQuery("Movies");
+                ParseQuery<ParseObject> queryCinema = ParseQuery.getQuery("Cinemas");
                 queryCinema.whereEqualTo("objectId", InvitationObject.getParseObject("Cinema").getObjectId());
                 List<ParseObject> dataCiname = queryCinema.find();
                 if(dataCiname.size() == 1) {
-                    SelectCinema = Cinema.createCinemaFromObject(dataMovie.get(0));
+                    SelectCinema = Cinema.createCinemaFromObject(dataCiname.get(0));
                 }
 
                 MovieInvitation Invitation = new MovieInvitation(InvitationObject.getInt("ID"),

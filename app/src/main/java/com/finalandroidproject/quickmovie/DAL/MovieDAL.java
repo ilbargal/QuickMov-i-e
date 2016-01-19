@@ -58,7 +58,8 @@ public class MovieDAL implements IMovieActions {
                 String ganre = movieObject.getString("Genre");
                 String description = movieObject.getString("Description");
                 double rating = movieObject.getDouble("Rating");
-                String image = movieObject.getParseFile("Image").getUrl();
+
+                ParseFile image = movieObject.getParseFile("Image");
                 ParseRelation Cinema = movieObject.getRelation("Cinema");
 
                 mMovie = new Movie();
@@ -66,7 +67,10 @@ public class MovieDAL implements IMovieActions {
                 mMovie.setGanre(ganre);
                 mMovie.setDescription(description);
                 mMovie.setRating(rating);
-                mMovie.setImagePath(image);
+                mMovie.setObjectID(movieObject.getObjectId());
+                if(image != null) {
+                    mMovie.setImagePath(image.getUrl());
+                }
                 mMovie.setCinemas(getCinemas(Cinema.getQuery(),Refresh));
 
                 arrMovies.add(mMovie);
@@ -78,6 +82,12 @@ public class MovieDAL implements IMovieActions {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<Cinema> getCinemas(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Cinemas");
+
+        return  getCinemas(query, true);
     }
 
     public List<Cinema> getCinemas(ParseQuery query, boolean Refresh){

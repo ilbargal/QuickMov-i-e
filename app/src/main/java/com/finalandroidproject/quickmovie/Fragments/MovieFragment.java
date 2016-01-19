@@ -98,8 +98,13 @@ public class MovieFragment extends Fragment implements AbsListView.OnItemClickLi
             final Movie currMovie = Cache.Movies.get(position);
             txtMovieName.setText(currMovie.getName());
 
-            new DownloadImageTask(imgMovieImage, (ProgressBar) convertView.findViewById(R.id.movieProgressBar))
-                    .execute(currMovie.getImagePath());
+            if(currMovie.getImagePath() != null && currMovie.getImagePath() != "") {
+                new DownloadImageTask(imgMovieImage, (ProgressBar) convertView.findViewById(R.id.movieProgressBar))
+                        .execute(currMovie.getImagePath());
+            }
+            else {
+                imgMovieImage.setImageResource(R.drawable.film);
+            }
 
             btnInviteFriendToMovie.setOnClickListener(new View.OnClickListener() {
                 @Override

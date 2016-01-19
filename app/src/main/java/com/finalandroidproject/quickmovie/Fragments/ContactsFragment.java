@@ -54,39 +54,41 @@ public class ContactsFragment extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+        try {
+            contacts = new LinkedList<Friend>();
 
-        contacts = new LinkedList<Friend>();
+            ContentResolver cr = getActivity().getContentResolver();
+            Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                    null, null, null, null);
+            if (cur.getCount() > 0) {
+                while (cur.moveToNext()) {
+                    String contactId = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+                    String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
-        ContentResolver cr = getActivity().getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
-        if (cur.getCount() > 0) {
-            while (cur.moveToNext()) {
-                String contactId = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
 
-                Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
+                    while (phones.moveToNext()) {
+                        String number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        int type = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
 
-                while (phones.moveToNext()) {
-                    String number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    int type = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
-
-                    if(type == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE) {
-                        contacts.add(new Friend("",number,name));
-                        break;
+                        if (type == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE) {
+                            contacts.add(new Friend("", number, name));
+                            break;
+                        }
                     }
                 }
             }
+
+            list = (ListView) view.findViewById(android.R.id.list);
+            list.setVisibility(View.VISIBLE);
+            container.setVisibility(View.VISIBLE);
+            list.setAdapter(mAdapter);
+
+            setListAdapter(mAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        list = (ListView) view.findViewById(android.R.id.list);
-        list.setVisibility(View.VISIBLE);
-        container.setVisibility(View.VISIBLE);
-        list.setAdapter(mAdapter);
-
-        setListAdapter(mAdapter);
-
         // Set the adapter
        // mListView = (AbsListView) view.findViewById(android.R.id.list);
        // mListView.setVisibility(View.VISIBLE);

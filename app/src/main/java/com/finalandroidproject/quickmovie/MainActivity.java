@@ -122,7 +122,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                 case 3:
                     return new ContactsFragment();
                 default:
-                    return new MovieFragment();
+                    return null;
+                    //return new MovieFragment();
             }
         }
 

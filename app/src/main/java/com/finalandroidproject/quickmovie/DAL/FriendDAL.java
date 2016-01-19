@@ -21,15 +21,16 @@ public class FriendDAL implements IFriendActions {
 
     @Override
     public List<Friend> getFriendsByUser(User user) {
-        ParseQuery<ParseObject> queryuser = ParseQuery.getQuery("Users");
-        queryuser.whereEqualTo("objectId", user.getID());
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Friends");
-         query.whereMatchesQuery("UserID", queryuser);
-
-        query.include("Users");
-
         try {
+            ParseQuery<ParseObject> queryuser = ParseQuery.getQuery("Users");
+            queryuser.whereEqualTo("objectId", user.getID());
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Friends");
+             query.whereMatchesQuery("UserID", queryuser);
+
+            query.include("Users");
+
+
             List<ParseObject> data = query.find();
             if(data.size() == 1) {
                 List<Friend> Friends = getFriendsByRelation(data.get(0).getRelation("FriendsID").getQuery());
