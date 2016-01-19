@@ -9,19 +9,32 @@ import com.parse.ParseObject;
  * Created by nivg1 on 16/01/2016.
  */
 public class Cinema {
+    private String objectID;
     private String Name;
     private Location location;
 
     public static Cinema createCinemaFromObject(ParseObject object) {
-        Cinema newCinema = new Cinema();
-        newCinema.setName(object.getString("Name"));
+        Cinema newCinema = new Cinema(object.getString("Name"));
         ParseGeoPoint Geopoint = object.getParseGeoPoint("Location");
         Location loc = new Location("Parse");
         loc.setLatitude(Geopoint.getLatitude());
         loc.setLongitude(Geopoint.getLongitude());
         newCinema.setLocation(loc);
+        newCinema.setObjectID(object.getObjectId());
 
         return newCinema;
+    }
+
+    public String getObjectID() {
+        return objectID;
+    }
+
+    public void setObjectID(String objectID) {
+        this.objectID = objectID;
+    }
+
+    public Cinema(String name) {
+        Name = name;
     }
 
     public String getName() {

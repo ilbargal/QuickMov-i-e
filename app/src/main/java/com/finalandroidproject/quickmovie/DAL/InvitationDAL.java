@@ -6,6 +6,8 @@ import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.Movie;
 import com.finalandroidproject.quickmovie.Model.MovieInvitation;
 import com.finalandroidproject.quickmovie.Model.User;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -43,11 +45,11 @@ public class InvitationDAL implements IInvitationActions {
                     SelectMovie = Movie.createMovieFromObject(dataMovie.get(0));
                 }
 
-                ParseQuery<ParseObject> queryCinema = ParseQuery.getQuery("Movies");
+                ParseQuery<ParseObject> queryCinema = ParseQuery.getQuery("Cinemas");
                 queryCinema.whereEqualTo("objectId", InvitationObject.getParseObject("Cinema").getObjectId());
                 List<ParseObject> dataCiname = queryCinema.find();
                 if(dataCiname.size() == 1) {
-                    SelectCinema = Cinema.createCinemaFromObject(dataMovie.get(0));
+                    SelectCinema = Cinema.createCinemaFromObject(dataCiname.get(0));
                 }
 
                 MovieInvitation Invitation = new MovieInvitation(InvitationObject.getInt("ID"),
@@ -104,6 +106,8 @@ public class InvitationDAL implements IInvitationActions {
                         SelectMovie,
                         SelectCinema,
                         InvitationObject.getDate("MovieTime"));
+
+                Invitation.setIsAccepted(InvitationObject.getBoolean("IsAccepted"));
                 arrInvitations.add(Invitation);
             }
 
@@ -116,22 +120,58 @@ public class InvitationDAL implements IInvitationActions {
     }
 
     @Override
-    public MovieInvitation inviteFriendToMovie(User user,Friend friend, Movie currMovie) {
-        return null;
-    }
-
-    @Override
     public void addNewInvitation(MovieInvitation invitation) {
+        ParseObject newInvitationObject = new ParseObject("Invitations");
+        newInvitationObject.put("SenderFriend",ParseObject.createWithoutData("Users", invitation.getFromFriend().getID()));
+        newInvitationObject.put("ReceiverFriend",ParseObject.createWithoutData("Users", invitation.getToFriend().getID()));
+        newInvitationObject.put("Movie",ParseObject.createWithoutData("Movies", invitation.getMovie().getObjectID()));
+        newInvitationObject.put("Cinema",ParseObject.createWithoutData("Cinemas", invitation.getCinema().getObjectID()));
+        newInvitationObject.put("MovieTime",invitation.getInvitationDate());
+        newInvitationObject.put("IsAccepted",invitation.isAccepted());
+        newInvitationObject.put("ID",invitation.getId());
+
+        newInvitationObject.saveInBackground();
 
     }
 
     @Override
-    public void updateInvitation(MovieInvitation invitation) {
+    public void updateInvitation(final MovieInvitation invitation) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Invitations");
+        query.whereEqualTo("ID",invitation.getId());
 
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> invitationObject, ParseException e) {
+                if (e == null) {
+                    ParseObject newInvitationObject = new ParseObject("Invitations");
+                    newInvitationObject.setObjectId(invitationObject.get(0).getObjectId());
+                    newInvitationObject.put("SenderFriend", ParseObject.createWithoutData("Users", invitation.getFromFriend().getID()));
+                    newInvitationObject.put("ReceiverFriend", ParseObject.createWithoutData("Users", invitation.getToFriend().getID()));
+                    newInvitationObject.put("Movie", ParseObject.createWithoutData("Movies", invitation.getMovie().getObjectID()));
+                    newInvitationObject.put("Cinema", ParseObject.createWithoutData("Cinemas", invitation.getCinema().getObjectID()));
+                    newInvitationObject.put("MovieTime", invitation.getInvitationDate());
+                    newInvitationObject.put("IsAccepted", invitation.isAccepted());
+                    newInvitationObject.put("ID", invitation.getId());
+
+                    newInvitationObject.saveInBackground();
+                }
+            }
+        });
     }
 
     @Override
-    public void removeInvitation(MovieInvitation invitation) {
+    public void removeInvitation(final MovieInvitation invitation) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Invitations");
+        query.whereEqualTo("ID",invitation.getId());
 
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> invitationObject, ParseException e) {
+                if (e == null) {
+                    ParseObject newInvitationObject = new ParseObject("Invitations");
+                    newInvitationObject.setObjectId(invitationObject.get(0).getObjectId());
+
+                    newInvitationObject.deleteInBackground();
+                }
+            }
+        });
     }
 }

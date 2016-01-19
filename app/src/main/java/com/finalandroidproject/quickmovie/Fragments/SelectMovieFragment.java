@@ -151,7 +151,7 @@ public class SelectMovieFragment extends Fragment {
                                                     new Friend(currentUser.getID(), currentUser.getPhone(), currentUser.getName()) ,
                                                      currFriend,
                                                      currMovie,
-                                                     "גלילות",
+                                                     new Cinema("יס פלאנט"),
                                                      new Date());
 
                     // Save invitation

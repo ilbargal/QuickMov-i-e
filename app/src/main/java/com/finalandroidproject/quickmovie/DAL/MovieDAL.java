@@ -94,15 +94,7 @@ public class MovieDAL implements IMovieActions {
                     cinemaObject.pinInBackground("Cinemas");
                 }
 
-                Cinema newCinema = new Cinema();
-                newCinema.setName(cinemaObject.getString("Name"));
-                ParseGeoPoint Geopoint = cinemaObject.getParseGeoPoint("Location");
-                Location loc = new Location("Parse");
-                loc.setLatitude(Geopoint.getLatitude());
-                loc.setLongitude(Geopoint.getLongitude());
-                newCinema.setLocation(loc);
-
-                Cinames.add(newCinema);
+                Cinames.add(Cinema.createCinemaFromObject(cinemaObject));
             }
 
             return  Cinames;

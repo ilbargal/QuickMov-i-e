@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.List;
 
 public class Movie {
+
+
+    private String objectID;
     private String name;
     private String description;
     private double rating;
@@ -17,6 +20,14 @@ public class Movie {
 
     public Movie() {
 
+    }
+
+    public String getObjectID() {
+        return objectID;
+    }
+
+    public void setObjectID(String objectID) {
+        this.objectID = objectID;
     }
 
     public Movie(String name, String imagePath) {
@@ -39,6 +50,7 @@ public class Movie {
         mMovie.setDescription(description);
         mMovie.setRating(rating);
         mMovie.setImagePath(image);
+        mMovie.setObjectID(object.getObjectId());
 
         return mMovie;
     }

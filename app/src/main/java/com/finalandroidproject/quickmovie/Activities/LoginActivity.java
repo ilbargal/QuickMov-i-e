@@ -31,6 +31,7 @@ import com.finalandroidproject.quickmovie.DAL.UserDAL;
 import com.finalandroidproject.quickmovie.MainActivity;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.Movie;
+import com.finalandroidproject.quickmovie.Model.MovieInvitation;
 import com.finalandroidproject.quickmovie.Model.User;
 import com.finalandroidproject.quickmovie.R;
 import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
@@ -101,15 +102,17 @@ public class LoginActivity extends Activity {
     }
     
     private void tryLogin() {
-//        User user = null;
-//        try {
-//            user = UserDAL.instance.loginUser("0","123456");
-//            InvitationDAL.instance.getMySendInvitations(user);
-//            //Friend newFriend = new Friend("ASBo5GOYsh","","");
-//            //FriendDAL.instance.addFriendtoUser(user, newFriend);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        User user = null;
+        try {
+            user = UserDAL.instance.loginUser("0","123456");
+            List<MovieInvitation> list = InvitationDAL.instance.getMySendInvitations(user);
+            list.size();
+
+            //Friend newFriend = new Friend("ASBo5GOYsh","","");
+            //FriendDAL.instance.addFriendtoUser(user, newFriend);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         if (mAuthTask != null) {
             return;
