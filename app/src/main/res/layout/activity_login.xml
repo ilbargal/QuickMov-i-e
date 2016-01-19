@@ -34,12 +34,16 @@
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="match_parent">
-
+        <LinearLayout android:id="@+id/base"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp">
         <LinearLayout android:id="@+id/base_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingTop="30dp"
+            android:visibility="visible"
             android:orientation="vertical">
 
             <AutoCompleteTextView
@@ -72,5 +76,62 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+        <LinearLayout android:id="@+id/base_Registration_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="30dp"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/username_Registr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="מס' טלפון"
+                android:inputType="phone"
+                android:digits="0123456789+"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+            <EditText android:id="@+id/password_Registr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="סיסמה"
+                android:imeActionId="@+id/login"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textAlignment="textEnd"
+                android:singleLine="true" />
+
+            <EditText android:id="@+id/Name_Registr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="שם"
+                android:maxLines="1"
+                android:textAlignment="textEnd"
+                android:singleLine="true" />
+
+            <Button
+                android:id="@+id/button_Registr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="הרשם"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+        </LinearLayout>
+
     </ScrollView>
+    <TextView
+        android:id="@+id/button_open_Registr"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="אינך רשום, לחץ כאן!!"
+        android:textStyle="bold" />
 </LinearLayout>

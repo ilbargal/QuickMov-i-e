@@ -52,12 +52,37 @@ public class UserDAL implements iUserActions {
         return uUser;
     }
 
+    public boolean CheckIfUserExsist(User newUser) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Users");
+        // Where PhoneNumID && Password
+        query.whereEqualTo("PhoneNumID", newUser.getPhone());
+
+        // Execute query (select)
+        List<ParseObject> data = null;
+
+        try {
+            data = query.find();
+
+            // Check if return one line
+            if(data.size() == 1) {
+                return true;
+            }
+        } catch (ParseException e) {
+            return false;
+        }
+
+        return false;
+    }
+
     @Override
     public boolean registerUser(User newUser) {
         ParseObject newUserObject = new ParseObject("Users");
         newUserObject.put("PhoneNumID",newUser.getPhone());
         newUserObject.put("Name",newUser.getName());
-        newUserObject.put("ProfilePic",newUser.getProfilePic());
+        if(newUser.getProfilePic() != null && newUser.getProfilePic() != "") {
+            newUserObject.put("ProfilePic",newUser.getProfilePic());
+        }
+
         newUserObject.put("Password",newUser.getPassword());
 
         newUserObject.saveEventually();

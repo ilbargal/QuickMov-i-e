@@ -3,6 +3,8 @@ package com.finalandroidproject.quickmovie.Activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.app.Activity;
@@ -88,6 +90,74 @@ public class LoginActivity extends Activity {
         mLoginFormView = (ScrollView)findViewById(R.id.login_form_scroll);
 
         mProgressView = findViewById(R.id.login_progress);
+
+        TextView vButton_open_Registr = (TextView)findViewById(R.id.button_open_Registr);
+        vButton_open_Registr.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(findViewById(R.id.base_login_form).getVisibility() == View.GONE){
+                    findViewById(R.id.base_login_form).setVisibility(View.VISIBLE);
+                    findViewById(R.id.base_Registration_form).setVisibility(View.GONE);
+                } else {
+                    findViewById(R.id.base_login_form).setVisibility(View.GONE);
+                    findViewById(R.id.base_Registration_form).setVisibility(View.VISIBLE);
+                }
+
+
+            }
+        });
+        final Activity me = this;
+        findViewById(R.id.button_Registr).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText UserName = ((EditText)findViewById(R.id.username_Registr));
+                EditText Password = ((EditText)findViewById(R.id.password_Registr));
+                EditText Name = ((EditText)findViewById(R.id.Name_Registr));
+
+                if(UserName.getText().toString() == "" ||
+                        Password.getText().toString() == "" ||
+                        Name.getText().toString() == "") {
+
+                    AlertDialog.Builder alertDialgBuilder = new AlertDialog.Builder(me);
+                    alertDialgBuilder.setNegativeButton("אישור", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    alertDialgBuilder.setTitle("הוספת משתמש");
+                    alertDialgBuilder.setMessage("אין להשאיר שדות ריקים");
+                    alertDialgBuilder.create().show();
+
+                } else {
+                    User newUser = new User();
+                    newUser.setName(Name.getText().toString());
+                    newUser.setPhone(UserName.getText().toString());
+                    newUser.setPassword(Password.getText().toString());
+
+                    if(UserDAL.instance.CheckIfUserExsist(newUser)) {
+                        AlertDialog.Builder alertDialgBuilder = new AlertDialog.Builder(me);
+                        alertDialgBuilder.setNegativeButton("אישור", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        alertDialgBuilder.setTitle("הוספת משתמש");
+                        alertDialgBuilder.setMessage("משתמש כבר קיים");
+                        alertDialgBuilder.create().show();
+                    }
+                    else {
+
+                        UserDAL.instance.registerUser(newUser);
+                        findViewById(R.id.base_Registration_form).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.base_login_form).setVisibility(View.VISIBLE);
+                    }
+                }
+
+
+            }
+        });
     }
 
     private boolean mayRequestContacts() {
