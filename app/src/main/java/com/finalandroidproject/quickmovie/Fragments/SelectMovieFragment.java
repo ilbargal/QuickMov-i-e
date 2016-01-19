@@ -24,14 +24,13 @@ import android.widget.Toast;
 
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Cinema;
+import com.finalandroidproject.quickmovie.Model.User;
 import com.finalandroidproject.quickmovie.UsefulClasses.DownloadImageTask;
 import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 import com.finalandroidproject.quickmovie.Model.Friend;
 import com.finalandroidproject.quickmovie.Model.Movie;
 import com.finalandroidproject.quickmovie.Model.MovieInvitation;
 import com.finalandroidproject.quickmovie.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -112,6 +111,7 @@ public class SelectMovieFragment extends Fragment {
                 Toast.makeText(getActivity(), "הזמנותיך עבור הסרט "  + currMovie.getName() + " נשלחו לחבריך", Toast.LENGTH_LONG).show();
             }
         };
+
         final List<Friend> friends = new ArrayList<Friend>();
         // For testing
         if (currMovie == null && !Cache.Movies.isEmpty()) {
@@ -144,11 +144,11 @@ public class SelectMovieFragment extends Fragment {
             public void onClick(View v) {
                 // Save invitaion and get back
                 MovieInvitation invitation;
-
+                User currentUser = (User) IntentHelper.getObjectForKey("currentUser");
                 for (Friend currFriend : friends)
                 {
-                    invitation = new MovieInvitation(1,
-                                                     new Friend("Bar gal", "123",""),
+                    invitation = new MovieInvitation(new Date().getTimezoneOffset(),
+                                                    new Friend(currentUser.getID(), currentUser.getPhone(), currentUser.getName()) ,
                                                      currFriend,
                                                      currMovie,
                                                      "גלילות",
@@ -177,7 +177,6 @@ public class SelectMovieFragment extends Fragment {
 
         movieRating.setText(String.valueOf(currMovie.getRating()) + " / 10");
         paintMovieByRating(movieRating, currMovie.getRating());
-        //movieSelectedCinema.setText(currMovie.getCinemas().get(1));
         movieSelectedCinema.setText("סינימה סיטי גלילות");
     }
 

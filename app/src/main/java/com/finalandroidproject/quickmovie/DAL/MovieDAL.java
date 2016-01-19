@@ -6,6 +6,7 @@ import android.util.Log;
 import com.finalandroidproject.quickmovie.Interfaces.IMovieActions;
 import com.finalandroidproject.quickmovie.Model.Cinema;
 import com.finalandroidproject.quickmovie.Model.Movie;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -59,8 +60,6 @@ public class MovieDAL implements IMovieActions {
                 double rating = movieObject.getDouble("Rating");
                 String image = movieObject.getParseFile("Image").getUrl();
                 ParseRelation Cinema = movieObject.getRelation("Cinema");
-
-
 
                 mMovie = new Movie();
                 mMovie.setName(name);
