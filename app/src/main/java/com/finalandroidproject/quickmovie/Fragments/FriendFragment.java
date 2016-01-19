@@ -116,6 +116,10 @@ public class FriendFragment extends ListFragment {
             if(currFriend.getProfilePic() != null && currFriend.getProfilePic() != "") {
                 new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendInvitationPrgBar)).execute(currFriend.getProfilePic());
             }
+            else {
+                new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendInvitationPrgBar)).execute("http://kollabase.com/data/userpics/default.png");
+            }
+
 
 
             txtFriendName.setText(currFriend.getName());

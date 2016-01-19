@@ -182,6 +182,7 @@ public class SelectMovieFragment extends Fragment {
         movieDescription.setMovementMethod(new ScrollingMovementMethod());
         movieDescription.setText(currMovie.getDescription());
         movieImage.setVisibility(View.GONE);
+
         new DownloadImageTask(movieImage, (ProgressBar) currView.findViewById(R.id.selectMovieProgressbar)).execute(currMovie.getImagePath());
 
         movieRating.setText(String.valueOf(currMovie.getRating()) + " / 10");
@@ -257,7 +258,15 @@ public class SelectMovieFragment extends Fragment {
             if (SelectMovieFragment.friends.contains(currFriend))
                 btnInviteToMovie.setChecked(true);
 
-            new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute(currFriend.getProfilePic());
+
+            if(currFriend.getProfilePic() != null && currFriend.getProfilePic() != "") {
+                new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute(currFriend.getProfilePic());
+            }
+            else {
+                new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute("http://kollabase.com/data/userpics/default.png");
+
+            }
+
             txtFriendName.setText(currFriend.getName());
 
             return convertView;
