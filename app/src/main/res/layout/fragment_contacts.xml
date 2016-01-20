@@ -2,7 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.finalandroidproject.quickmovie.Fragments.ContactsFragment">
+    <ProgressBar
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/selectContactsProgressbar"
+        android:layout_weight="2"
+        android:visibility="visible"/>
     <ListView android:id="@android:id/list" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:numColumns="2"/>
+        android:layout_height="match_parent" android:numColumns="2"
+        android:visibility="gone"/>
 
 </FrameLayout>

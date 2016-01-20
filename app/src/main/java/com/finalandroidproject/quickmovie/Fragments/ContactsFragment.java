@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.finalandroidproject.quickmovie.DAL.FriendDAL;
@@ -28,11 +30,12 @@ import com.finalandroidproject.quickmovie.Model.User;
 import com.finalandroidproject.quickmovie.R;
 import com.finalandroidproject.quickmovie.UsefulClasses.IntentHelper;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ContactsFragment extends ListFragment {
-    private static List<Friend> contacts;
+    private static List<Friend> contacts = new ArrayList<>();
     private ContactsListAdapter mAdapter;
    // private AbsListView mListView;
     private ListView list;
@@ -55,39 +58,10 @@ public class ContactsFragment extends ListFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
         try {
-            if(Cache.Contacts.size() > 0) {
-                contacts = Cache.Contacts;
-            } else {
-                contacts = new LinkedList<Friend>();
-
-                ContentResolver cr = getActivity().getContentResolver();
-                Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                        null, null, null, null);
-                if (cur.getCount() > 0) {
-                    while (cur.moveToNext()) {
-                        String contactId = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-                        String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-
-                        Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
-
-                        while (phones.moveToNext()) {
-                            String number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            int type = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
-
-                            if (type == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE) {
-                                contacts.add(new Friend("", number, name));
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
             list = (ListView) view.findViewById(android.R.id.list);
-            list.setVisibility(View.VISIBLE);
             container.setVisibility(View.VISIBLE);
-            mAdapter.contactsList = contacts;
-            list.setAdapter(mAdapter);
+
+            new LoadContaract(list,(ProgressBar)view.findViewById(R.id.selectContactsProgressbar),getActivity().getContentResolver()).execute();
 
             //setListAdapter(mAdapter);
         } catch (Exception e) {
@@ -176,4 +150,66 @@ public class ContactsFragment extends ListFragment {
         }
     }
 
+    class LoadContaract extends AsyncTask<Void, Void, List<Friend>> {
+        ProgressBar progressBar;
+        ContentResolver cr;
+        ListView List;
+
+        public LoadContaract(ListView iadapter,ProgressBar progressBar,ContentResolver iCr)
+        {
+            this.List = iadapter;
+            this.cr = iCr;
+            this.progressBar = progressBar;
+            this.progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected List<Friend> doInBackground(Void... params) {
+            List<Friend> contacts = new LinkedList<Friend>();
+            if(Cache.Contacts.size() > 0) {
+                contacts = Cache.Contacts;
+            } else {
+
+                Cursor cur = this.cr.query(ContactsContract.Contacts.CONTENT_URI,
+                        null, null, null, null);
+
+                if (cur.getCount() > 0) {
+                    while (cur.moveToNext()) {
+                        String contactId = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+                        String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+                        Cursor phones = this.cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
+
+                        while (phones.moveToNext()) {
+                            String number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            int type = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+
+                            if (type == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE) {
+                                contacts.add(new Friend("", number, name));
+
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                Cache.Contacts = contacts;
+            }
+
+            return contacts;
+        }
+
+        @Override
+        protected void onPostExecute(List<Friend> friends) {
+            this.progressBar.setVisibility(View.GONE);
+
+            this.List.setVisibility(View.VISIBLE);
+            ContactsListAdapter mAdapter = new ContactsListAdapter();
+            mAdapter.contactsList = friends;
+            this.List.setAdapter(mAdapter);
+
+            super.onPostExecute(friends);
+        }
+    }
 }
