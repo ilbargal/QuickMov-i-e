@@ -42,9 +42,7 @@ public class ContactsFragment extends ListFragment {
     private final String ADD_FRIEND_DIALOG_TITLE = "הוספת חבר";
     private final String USER_DOESNT_EXISTS = "משתמש לא קיים";
 
-    public ContactsFragment() {
-        // Required empty public constructor
-    }
+    public ContactsFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +61,6 @@ public class ContactsFragment extends ListFragment {
 
             new LoadContaract(list,(ProgressBar)view.findViewById(R.id.selectContactsProgressbar),getActivity().getContentResolver()).execute();
 
-            //setListAdapter(mAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
