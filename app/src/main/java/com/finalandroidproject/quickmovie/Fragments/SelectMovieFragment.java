@@ -125,6 +125,7 @@ public class SelectMovieFragment extends Fragment {
         listener = new InvitationCreateListener() {
             @Override
             public void onInvitationsCreated(Movie currMovie) {
+                // Notify invitation send
                 Toast.makeText(getActivity(),
                             "   הזמנותיך עבור הסרט "  + currMovie.getName() + " נשלחו לחבריך",
                                 Toast.LENGTH_LONG).show();
