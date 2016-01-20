@@ -46,7 +46,6 @@ public class FriendFragment extends ListFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend_list, container, false);
 
-        // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
@@ -89,16 +88,16 @@ public class FriendFragment extends ListFragment {
             Button btnInviteToMovie = (Button) convertView.findViewById(R.id.btnInviteToMovie);
 
             final Friend currFriend = Cache.Friends.get(position);
+            txtFriendName.setText(currFriend.getName());
             if(currFriend.getProfilePic() != null && currFriend.getProfilePic() != "") {
                 new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendInvitationPrgBar)).execute(currFriend.getProfilePic());
             }
             else {
+                // Default picture
                 new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendInvitationPrgBar)).execute("http://kollabase.com/data/userpics/default.png");
             }
 
-
-
-            txtFriendName.setText(currFriend.getName());
+            // Invitation button
             btnInviteToMovie.setText("הזמן את "  + currFriend.getName() + " לסרט");
             btnInviteToMovie.setOnClickListener(new View.OnClickListener() {
                 @Override

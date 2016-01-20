@@ -112,6 +112,8 @@ public class SelectMovieFragment extends Fragment {
             builder.setItems(cinemas.toArray(new CharSequence[cinemas.size()]), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     currCinema = Cache.Cinemas.get(which);
+                    TextView currCinemaText = (TextView) currView.findViewById(R.id.selectionMovieCinema);
+                    currCinemaText.setText(currCinema.getName());
                 }
             });
         }
