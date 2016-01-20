@@ -101,6 +101,7 @@ public class SelectMovieFragment extends Fragment {
     }
 
     public AlertDialog createCinemasDialog(final View currView, Movie currMovie) {
+        currCinema = Cache.Cinemas.get(0);
         ArrayList<String> cinemas = new ArrayList<String>();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

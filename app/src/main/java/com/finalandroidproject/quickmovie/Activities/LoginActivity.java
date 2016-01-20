@@ -56,6 +56,12 @@ public class LoginActivity extends Activity {
     private ScrollView mLoginFormView;
     private Button mSignInButton;
 
+    // Consts
+    private final int MIN_PASSWORD_LENGTH = 4;
+    private final String SHORT_PASSWORD_MESSAGE = "סיסמה קצרה מדי";
+    private final String WRONG_PASSWORD = "סיסמה שגויה";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,22 +176,8 @@ public class LoginActivity extends Activity {
 
         return false;
     }
-    
-    private void tryLogin() {
-        //MovieDAL.instance.getAllMovies(0,10,false);
-        //MovieDAL.instance.getMovieByName("משימה בלתי אפשרית 5");
-//        User user = null;
-//        try {
-//            user = UserDAL.instance.loginUser("0","123456");
-//            List<MovieInvitation> list = InvitationDAL.instance.getMySendInvitations(user);
-//            list.size();
-//
-//            //Friend newFriend = new Friend("ASBo5GOYsh","","");
-//            //FriendDAL.instance.addFriendtoUser(user, newFriend);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
 
+    private void tryLogin() {
         if (mAuthTask != null) {
             return;
         }
@@ -203,7 +195,7 @@ public class LoginActivity extends Activity {
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(SHORT_PASSWORD_MESSAGE);
             focusView = mPasswordView;
             cancel = true;
         }
@@ -233,8 +225,7 @@ public class LoginActivity extends Activity {
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > MIN_PASSWORD_LENGTH;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
@@ -294,12 +285,12 @@ public class LoginActivity extends Activity {
         @Override
         protected User doInBackground(String... params) {
             try {
+                // Login
                 return UserDAL.instance.loginUser(params[0],params[1]);
             } catch (ParseException e) {
 
             }
 
-            // TODO: register the new account here.
             return null;
         }
 
@@ -311,7 +302,6 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(User user) {
             mAuthTask = null;
-            //showProgress(false);
 
             // User successfully login
             if (user != null) {
@@ -323,7 +313,7 @@ public class LoginActivity extends Activity {
 
             } else {
                 showProgress(false);
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(WRONG_PASSWORD);
                 mPasswordView.requestFocus();
             }
         }
