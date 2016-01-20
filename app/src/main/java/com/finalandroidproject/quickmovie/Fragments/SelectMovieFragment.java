@@ -42,11 +42,12 @@ import java.util.List;
 public class SelectMovieFragment extends Fragment {
 
     public Movie currMovie;
-    public Cinema currCinema;
     public static List<Friend> friends;
-    public InvitationCreateListener listener;
-    public AlertDialog movieDialog;
-    public AlertDialog cinemasDialog;
+    private Cinema currCinema;
+
+    private InvitationCreateListener listener;
+    private AlertDialog movieDialog;
+    private AlertDialog cinemasDialog;
 
     private final String CHOOSE_CINEMA_DIALOG_TITLE = "בחר אולם קולנוע";
     private final String CHOOSE_MOVIE_DIALOG_TITLE = "בחר סרט";
@@ -65,13 +66,18 @@ public class SelectMovieFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_select_movie, container, false);
         friends = new ArrayList<Friend>();
         friends.add((Friend) IntentHelper.getObjectForKey("friend"));
+
+        // Initalize all components
         initalize(view);
+
+        // Creates dialogs
         movieDialog = createMoviesDialog(view);
         cinemasDialog = createCinemasDialog(view, currMovie);
+
         return view;
     }
 
@@ -86,7 +92,7 @@ public class SelectMovieFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         currMovie = Cache.Movies.get(which);
 
-                        // Change chosen movie detials: picutrue, description and name
+                        // Change chosen movie detials: picuture, description and name
                         setMovieDetails(currView, currMovie);
                     }
                 });
@@ -114,21 +120,22 @@ public class SelectMovieFragment extends Fragment {
     }
 
     public void initalize(View currView) {
-        //Movie myMovie = new MovieDAL().getMovieByName("bla bla");
         listener = new InvitationCreateListener() {
             @Override
             public void onInvitationsCreated(Movie currMovie) {
-                Toast.makeText(getActivity(), "הזמנותיך עבור הסרט "  + currMovie.getName() + " נשלחו לחבריך", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),
+                            "   הזמנותיך עבור הסרט "  + currMovie.getName() + " נשלחו לחבריך",
+                                Toast.LENGTH_LONG).show();
             }
         };
 
         final List<Friend> friends = new ArrayList<Friend>();
-        // For testing
-        if (currMovie == null && !Cache.Movies.isEmpty()) {
+        if (currMovie == null && !Cache.Movies.isEmpty())
             currMovie = Cache.Movies.get(0);
-        }
 
         setMovieDetails(currView, currMovie);
+
+        // Movie Dialog
         TextView chooseMovie = (TextView) currView.findViewById(R.id.lstMovies);
         chooseMovie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +144,7 @@ public class SelectMovieFragment extends Fragment {
             }
         });
 
+        // Cinama dialgo
         TextView chooseCinema = (TextView) currView.findViewById(R.id.selectionMovieCinema);
         chooseCinema.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,8 +153,11 @@ public class SelectMovieFragment extends Fragment {
             }
         });
 
+        // Friends list
         AbsListView mListView = (AbsListView) currView.findViewById(R.id.selectionMovieFriends);
         mListView.setAdapter(new FriendInvitationListAdapter(this));
+
+        // Invite to movie button
         Button btnAddInvitation = (Button) currView.findViewById(R.id.btnCreateInvitation);
         btnAddInvitation.setOnClickListener(new View.OnClickListener() {
             @Override

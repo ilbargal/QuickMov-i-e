@@ -1,24 +1,19 @@
 package com.finalandroidproject.quickmovie.Fragments;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
 import com.finalandroidproject.quickmovie.Model.Cache;
 import com.finalandroidproject.quickmovie.Model.Movie;
@@ -65,7 +60,7 @@ public class MovieFragment extends Fragment implements AbsListView.OnItemClickLi
     }
 
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(String currMovie);
+        void onFragmentInteraction(String currMovie);
     }
 
     class MovieListAdapter extends BaseAdapter {
@@ -95,9 +90,11 @@ public class MovieFragment extends Fragment implements AbsListView.OnItemClickLi
             ImageView imgMovieImage = (ImageView) convertView.findViewById(R.id.imgMovieImage);
             Button btnInviteFriendToMovie = (Button) convertView.findViewById(R.id.btnInviteFriends);
 
+            // Movie name
             final Movie currMovie = Cache.Movies.get(position);
             txtMovieName.setText(currMovie.getName());
 
+            // Async movie image
             if(currMovie.getImagePath() != null && currMovie.getImagePath() != "") {
                 new DownloadImageTask(imgMovieImage, (ProgressBar) convertView.findViewById(R.id.movieProgressBar))
                         .execute(currMovie.getImagePath());
@@ -106,6 +103,7 @@ public class MovieFragment extends Fragment implements AbsListView.OnItemClickLi
                 imgMovieImage.setImageResource(R.drawable.film);
             }
 
+            // Invite to movies
             btnInviteFriendToMovie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

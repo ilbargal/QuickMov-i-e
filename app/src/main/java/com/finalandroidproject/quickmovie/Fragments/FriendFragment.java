@@ -31,7 +31,6 @@ public class FriendFragment extends ListFragment {
 
     private AbsListView mListView;
     private FriendListAdapter mAdapter;
-    private OnFragmentInteractionListener mListener;
 
     public FriendFragment() {
     }
@@ -55,34 +54,11 @@ public class FriendFragment extends ListFragment {
         btnAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: get all users contacts and open new fragment or change the current fragment...
                 MainActivity.mViewPager.setCurrentItem(3, true);
-//                FragmentManager fragmentManager = getActivity().getFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                ContactsFragment fragment = new ContactsFragment();
-//                fragmentTransaction.replace(R.id.pager, fragment);
-//                fragmentTransaction.addToBackStack("friendsTAG");
-//                fragmentTransaction.commit();
             }
         });
 
-        // Set OnItemClickListener so we can be notified on item clicks
-        //mListView.setOnItemClickListener((AdapterView.OnItemClickListener) this);
-
         return view;
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-
-        if (null != mListener) {
-        }
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
     }
 
     class FriendListAdapter extends BaseAdapter{
