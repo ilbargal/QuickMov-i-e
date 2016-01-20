@@ -31,7 +31,6 @@ public class FriendFragment extends ListFragment {
 
     private AbsListView mListView;
     private FriendListAdapter mAdapter;
-    private OnFragmentInteractionListener mListener;
 
     public FriendFragment() {
     }
@@ -47,7 +46,6 @@ public class FriendFragment extends ListFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend_list, container, false);
 
-        // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
@@ -55,34 +53,11 @@ public class FriendFragment extends ListFragment {
         btnAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: get all users contacts and open new fragment or change the current fragment...
                 MainActivity.mViewPager.setCurrentItem(3, true);
-//                FragmentManager fragmentManager = getActivity().getFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                ContactsFragment fragment = new ContactsFragment();
-//                fragmentTransaction.replace(R.id.pager, fragment);
-//                fragmentTransaction.addToBackStack("friendsTAG");
-//                fragmentTransaction.commit();
             }
         });
 
-        // Set OnItemClickListener so we can be notified on item clicks
-        //mListView.setOnItemClickListener((AdapterView.OnItemClickListener) this);
-
         return view;
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-
-        if (null != mListener) {
-        }
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
     }
 
     class FriendListAdapter extends BaseAdapter{
@@ -113,16 +88,16 @@ public class FriendFragment extends ListFragment {
             Button btnInviteToMovie = (Button) convertView.findViewById(R.id.btnInviteToMovie);
 
             final Friend currFriend = Cache.Friends.get(position);
+            txtFriendName.setText(currFriend.getName());
             if(currFriend.getProfilePic() != null && currFriend.getProfilePic() != "") {
                 new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendInvitationPrgBar)).execute(currFriend.getProfilePic());
             }
             else {
+                // Default picture
                 new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendInvitationPrgBar)).execute("http://kollabase.com/data/userpics/default.png");
             }
 
-
-
-            txtFriendName.setText(currFriend.getName());
+            // Invitation button
             btnInviteToMovie.setText("הזמן את "  + currFriend.getName() + " לסרט");
             btnInviteToMovie.setOnClickListener(new View.OnClickListener() {
                 @Override

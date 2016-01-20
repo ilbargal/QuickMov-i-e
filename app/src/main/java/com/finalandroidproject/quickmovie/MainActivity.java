@@ -10,15 +10,10 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
-
-import com.finalandroidproject.quickmovie.Activities.NavigationActivity;
 import com.finalandroidproject.quickmovie.Fragments.ContactsFragment;
 import com.finalandroidproject.quickmovie.Fragments.FriendFragment;
 import com.finalandroidproject.quickmovie.Fragments.InvitationFragment;
 import com.finalandroidproject.quickmovie.Fragments.MovieFragment;
-import com.finalandroidproject.quickmovie.Fragments.SelectMovieFragment;
-import com.finalandroidproject.quickmovie.Model.Movie;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
 
@@ -29,22 +24,14 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
-        // Set up the action bar.
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        // When swiping between different sections, select the corresponding
-        // tab. We can also use ActionBar.Tab#select() to do this if we have
-        // a reference to the Tab.
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -123,7 +110,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                     return new ContactsFragment();
                 default:
                     return null;
-                    //return new MovieFragment();
             }
         }
 

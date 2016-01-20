@@ -37,10 +37,10 @@ import java.util.List;
 public class ContactsFragment extends ListFragment {
     private static List<Friend> contacts = new ArrayList<>();
     private ContactsListAdapter mAdapter;
-   // private AbsListView mListView;
     private ListView list;
 
-    private OnFragmentInteractionListener mListener;
+    private final String ADD_FRIEND_DIALOG_TITLE = "הוספת חבר";
+    private final String USER_DOESNT_EXISTS = "משתמש לא קיים";
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -67,25 +67,8 @@ public class ContactsFragment extends ListFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Set the adapter
-       // mListView = (AbsListView) view.findViewById(android.R.id.list);
-       // mListView.setVisibility(View.VISIBLE);
-       // ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         return view;
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-
-        if (null != mListener) {
-        }
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
     class ContactsListAdapter extends BaseAdapter {
@@ -95,7 +78,6 @@ public class ContactsFragment extends ListFragment {
 
         @Override
         public int getCount() {
-            Log.d("ContactsSize", String.valueOf(contactsList.size()));
             return contactsList.size();
         }
 
@@ -110,7 +92,6 @@ public class ContactsFragment extends ListFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Log.d("TAG", "Enter getView!!!");
             if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.contact_row_layout, null);
@@ -139,8 +120,8 @@ public class ContactsFragment extends ListFragment {
 
                             }
                         });
-                        alertDialgBuilder.setTitle("הוספת חבר");
-                        alertDialgBuilder.setMessage("משתמש לא קיים");
+                        alertDialgBuilder.setTitle(ADD_FRIEND_DIALOG_TITLE);
+                        alertDialgBuilder.setMessage(USER_DOESNT_EXISTS);
                         alertDialgBuilder.create().show();
                     }
 

@@ -2,12 +2,13 @@ package com.finalandroidproject.quickmovie.UsefulClasses;
 
 import java.util.Hashtable;
 
+// This class contains global variable - useful for all activities
 public class IntentHelper {
     private static IntentHelper _instance;
     private Hashtable<String, Object> _hash;
 
-
-    private IntentHelper() {
+    private IntentHelper()
+    {
         _hash = new Hashtable<String, Object>();
     }
 
