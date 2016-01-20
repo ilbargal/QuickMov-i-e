@@ -164,6 +164,9 @@ public class ContactsFragment extends ListFragment {
                             int type = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
 
                             if (type == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE) {
+                                number = number.replace("-", "");
+                                number = number.replace("+972","0");
+                                number = number.replace(" ","");
                                 contacts.add(new Friend("", number, name));
 
                                 break;
