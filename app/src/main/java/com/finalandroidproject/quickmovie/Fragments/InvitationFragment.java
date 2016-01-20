@@ -104,10 +104,13 @@ public class InvitationFragment extends ListFragment {
             checkIsAccepted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        currInvitation.setIsAccepted(true);
+                    try {
+                        currInvitation.setIsAccepted(isChecked);
                         new InvitationDAL().updateInvitation(currInvitation);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
                 }
             });
             return convertView;

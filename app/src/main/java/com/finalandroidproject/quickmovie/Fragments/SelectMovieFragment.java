@@ -154,15 +154,16 @@ public class SelectMovieFragment extends Fragment {
                     // Save invitaion and get back
                     MovieInvitation invitation;
                     for (Friend currFriend : SelectMovieFragment.friends) {
-                        invitation = new MovieInvitation(new Date().getTimezoneOffset(),
-                                new Friend(Cache.currentUser.getID(), Cache.currentUser.getPhone(), Cache.currentUser.getName()),
-                                currFriend,
-                                currMovie,
-                                Cache.Cinemas.get(0),
-                                new Date());
+                        if(currFriend != null) {
+                            invitation = new MovieInvitation(new Date().getTimezoneOffset(),
+                                    new Friend(Cache.currentUser.getID(), Cache.currentUser.getPhone(), Cache.currentUser.getName()),
+                                    currFriend,
+                                    currMovie,
+                                    Cache.Cinemas.get(0),
+                                    new Date());
 
-                        new InvitationDAL().addNewInvitation(invitation);
-                        Cache.Invitations.add(invitation);
+                            new InvitationDAL().addNewInvitation(invitation);
+                        }
                     }
                     getActivity().finish();
                     listener.onInvitationsCreated(currMovie);
@@ -243,7 +244,7 @@ public class SelectMovieFragment extends Fragment {
             TextView txtFriendName = (TextView) convertView.findViewById(R.id.friendName);
             CheckBox btnInviteToMovie = (CheckBox) convertView.findViewById(R.id.isFriendInvited);
 
-            btnInviteToMovie.setChecked(false);
+
             final Friend currFriend = Cache.Friends.get(position);
 
             btnInviteToMovie.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -253,25 +254,28 @@ public class SelectMovieFragment extends Fragment {
                         if (!SelectMovieFragment.friends.contains(Cache.Friends.get(position))) {
                             SelectMovieFragment.friends.add(Cache.Friends.get(position));
                         }
-                    }
-                    else {
+                    } else {
                         if (SelectMovieFragment.friends.contains(Cache.Friends.get(position))) {
-                            SelectMovieFragment.friends.remove(position);
+                            int pos = SelectMovieFragment.friends.indexOf(Cache.Friends.get(position));
+                            SelectMovieFragment.friends.remove(pos);
                         }
                     }
                 }
             });
 
-            if (SelectMovieFragment.friends.contains(currFriend))
+            if (SelectMovieFragment.friends.contains(currFriend)) {
                 btnInviteToMovie.setChecked(true);
-
-
-            if(currFriend.getProfilePic() != null && currFriend.getProfilePic() != "") {
-                new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute(currFriend.getProfilePic());
+            } else {
+                btnInviteToMovie.setChecked(false);
             }
-            else {
-                new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute("http://kollabase.com/data/userpics/default.png");
 
+            if(imgFriendImage.getDrawable() == null) {
+                if (currFriend.getProfilePic() != null && currFriend.getProfilePic() != "") {
+                    new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute(currFriend.getProfilePic());
+                } else {
+                    new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute("http://kollabase.com/data/userpics/default.png");
+
+                }
             }
 
             txtFriendName.setText(currFriend.getName());

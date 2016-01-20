@@ -34,15 +34,20 @@ public class FriendDAL implements IFriendActions {
             List<ParseObject> data = query.find();
             if(data.size() == 1) {
                 List<Friend> Friends = getFriendsByRelation(data.get(0).getRelation("FriendsID").getQuery());
-                user.setFriends(Friends);
-                user.setFriendTableID(data.get(0).getObjectId());
-                return Friends;
+                if(Friends.size() > 0) {
+                    user.setFriends(Friends);
+                    user.setFriendTableID(data.get(0).getObjectId());
+                    return Friends;
+                } else {
+                    return new ArrayList<Friend>() ;
+                }
+
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return new ArrayList<Friend>();
     }
 
     private List<Friend> getFriendsByRelation(ParseQuery query) throws ParseException {
@@ -91,8 +96,6 @@ public class FriendDAL implements IFriendActions {
                 query.getInBackground(ObjectID,new GetCallback<ParseObject>() {
                     public void done(ParseObject FriendObject, ParseException e) {
                         if (e == null) {
-                            // Now let's update it with some new data. In this case, only cheatMode and score
-                            // will get sent to the Parse Cloud. playerName hasn't changed.
                             FriendObject.getRelation("FriendsID").add(ParseObject.createWithoutData("Users", newFriend.getID()));
                             FriendObject.saveEventually();
                         }

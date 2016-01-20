@@ -4,6 +4,10 @@ import java.util.Date;
 
 public class MovieInvitation {
     private int id;
+
+
+
+    private String objetcID;
     private Friend fromFriend;
     private Friend toFriend;
     private Movie movie;
@@ -19,6 +23,14 @@ public class MovieInvitation {
         this.cinema = cinema;
         this.invitationDate = invitationDate;
         this.isAccepted = false;
+    }
+
+    public String getObjetcID() {
+        return objetcID;
+    }
+
+    public void setObjetcID(String objetcID) {
+        this.objetcID = objetcID;
     }
 
     public int getId() {

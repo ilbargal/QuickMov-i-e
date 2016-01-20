@@ -76,29 +76,58 @@ public class InvitationDAL implements IInvitationActions {
 
         ParseQuery<ParseObject> queryInvitations = ParseQuery.getQuery("Invitations");
         queryInvitations.whereMatchesQuery("ReceiverFriend", queryuser);
-
+        queryInvitations.include("Users");
         try {
             List<ParseObject> data = queryInvitations.find();
             List<MovieInvitation> arrInvitations = new ArrayList<MovieInvitation>();
             for (ParseObject InvitationObject : data) {
-                Friend SenderFriend = Friend.createFriendFromObject(InvitationObject.getParseObject("SenderFriend"));
-                Friend ReceiverFriend = Friend.createFriendFromObject(InvitationObject.getParseObject("ReceiverFriend"));
                 Movie SelectMovie = null;
                 Cinema SelectCinema = null;
+                Friend SenderFriend = null;
+                Friend ReceiverFriend = null;
 
-                ParseQuery<ParseObject> queryMovie = ParseQuery.getQuery("Movies");
-                queryMovie.whereEqualTo("objectId", InvitationObject.getParseObject("Movie").getObjectId());
-                List<ParseObject> dataMovie = queryMovie.find();
-                if(dataMovie.size() == 1) {
-                    SelectMovie = Movie.createMovieFromObject(dataMovie.get(0));
+                if(InvitationObject.getParseObject("SenderFriend").isDataAvailable()) {
+                    SenderFriend = Friend.createFriendFromObject(InvitationObject.getParseObject("SenderFriend"));
+                } else {
+                    ParseQuery<ParseObject> queryMovie = ParseQuery.getQuery("Users");
+                    ParseObject dataSenderFriend = queryMovie.get(InvitationObject.getParseObject("SenderFriend").getObjectId());
+                    if(dataSenderFriend != null) {
+                        SenderFriend = Friend.createFriendFromObject(dataSenderFriend);
+                    }
                 }
 
-                ParseQuery<ParseObject> queryCinema = ParseQuery.getQuery("Cinemas");
-                queryCinema.whereEqualTo("objectId", InvitationObject.getParseObject("Cinema").getObjectId());
-                List<ParseObject> dataCiname = queryCinema.find();
-                if(dataCiname.size() == 1) {
-                    SelectCinema = Cinema.createCinemaFromObject(dataCiname.get(0));
+                if(InvitationObject.getParseObject("ReceiverFriend").isDataAvailable()) {
+                    ReceiverFriend = Friend.createFriendFromObject(InvitationObject.getParseObject("ReceiverFriend"));
+                } else {
+                    ParseQuery<ParseObject> queryMovie = ParseQuery.getQuery("Users");
+                    ParseObject dataReceiverFriend = queryMovie.get(InvitationObject.getParseObject("ReceiverFriend").getObjectId());
+                    if(dataReceiverFriend != null) {
+                        ReceiverFriend = Friend.createFriendFromObject(dataReceiverFriend);
+                    }
                 }
+
+                if(InvitationObject.getParseObject("Movie").isDataAvailable()) {
+                    SelectMovie = Movie.createMovieFromObject(InvitationObject.getParseObject("Movie"));
+                } else {
+                    ParseQuery<ParseObject> queryMovie = ParseQuery.getQuery("Movies");
+                    queryMovie.whereEqualTo("objectId", InvitationObject.getParseObject("Movie").getObjectId());
+                    List<ParseObject> dataMovie = queryMovie.find();
+                    if(dataMovie.size() == 1) {
+                        SelectMovie = Movie.createMovieFromObject(dataMovie.get(0));
+                    }
+                }
+
+                if(InvitationObject.getParseObject("Cinema").isDataAvailable()) {
+                    SelectCinema = Cinema.createCinemaFromObject(InvitationObject.getParseObject("Cinema"));
+                } else {
+                    ParseQuery<ParseObject> queryCinema = ParseQuery.getQuery("Cinemas");
+                    queryCinema.whereEqualTo("objectId", InvitationObject.getParseObject("Cinema").getObjectId());
+                    List<ParseObject> dataCiname = queryCinema.find();
+                    if(dataCiname.size() == 1) {
+                        SelectCinema = Cinema.createCinemaFromObject(dataCiname.get(0));
+                    }
+                }
+
 
                 MovieInvitation Invitation = new MovieInvitation(InvitationObject.getInt("ID"),
                         SenderFriend,
@@ -108,6 +137,7 @@ public class InvitationDAL implements IInvitationActions {
                         InvitationObject.getDate("MovieTime"));
 
                 Invitation.setIsAccepted(InvitationObject.getBoolean("IsAccepted"));
+                Invitation.setObjetcID(InvitationObject.getObjectId());
                 arrInvitations.add(Invitation);
             }
 
@@ -136,14 +166,13 @@ public class InvitationDAL implements IInvitationActions {
 
     @Override
     public void updateInvitation(final MovieInvitation invitation) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Invitations");
-        query.whereEqualTo("ID",invitation.getId());
 
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> invitationObject, ParseException e) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Invitations");
+
+        query.getInBackground(invitation.getObjetcID() ,new GetCallback<ParseObject>() {
+            public void done(ParseObject newInvitationObject, ParseException e) {
                 if (e == null) {
-                    ParseObject newInvitationObject = new ParseObject("Invitations");
-                    newInvitationObject.setObjectId(invitationObject.get(0).getObjectId());
+                    newInvitationObject.setObjectId(invitation.getObjetcID());
                     newInvitationObject.put("SenderFriend", ParseObject.createWithoutData("Users", invitation.getFromFriend().getID()));
                     newInvitationObject.put("ReceiverFriend", ParseObject.createWithoutData("Users", invitation.getToFriend().getID()));
                     newInvitationObject.put("Movie", ParseObject.createWithoutData("Movies", invitation.getMovie().getObjectID()));

@@ -18,6 +18,7 @@ public class Cache {
     public static List<Movie> Movies = new ArrayList<Movie>();
     public static List<Cinema> Cinemas = new ArrayList<Cinema>();
     public static List<Friend> Friends = new ArrayList<Friend>();
+    public static List<Friend> Contacts = new ArrayList<Friend>();
     public static List<MovieInvitation> Invitations = new ArrayList<MovieInvitation>();
 
     static {
