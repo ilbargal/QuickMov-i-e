@@ -21,6 +21,7 @@ import java.util.List;
 public class InvitationDAL implements IInvitationActions {
     public final static InvitationDAL instance = new InvitationDAL();
 
+    // ------ not use ------
     @Override
     public List<MovieInvitation> getMySendInvitations(User user) {
         ParseQuery<ParseObject> queryuser = ParseQuery.getQuery("Users");
@@ -86,6 +87,7 @@ public class InvitationDAL implements IInvitationActions {
                 Friend SenderFriend = null;
                 Friend ReceiverFriend = null;
 
+                // Query SenderFriend from user table
                 if(InvitationObject.getParseObject("SenderFriend").isDataAvailable()) {
                     SenderFriend = Friend.createFriendFromObject(InvitationObject.getParseObject("SenderFriend"));
                 } else {
@@ -96,6 +98,7 @@ public class InvitationDAL implements IInvitationActions {
                     }
                 }
 
+                // Query ReceiverFriend from user table
                 if(InvitationObject.getParseObject("ReceiverFriend").isDataAvailable()) {
                     ReceiverFriend = Friend.createFriendFromObject(InvitationObject.getParseObject("ReceiverFriend"));
                 } else {
@@ -106,6 +109,7 @@ public class InvitationDAL implements IInvitationActions {
                     }
                 }
 
+                // Query Movie from movie table
                 if(InvitationObject.getParseObject("Movie").isDataAvailable()) {
                     SelectMovie = Movie.createMovieFromObject(InvitationObject.getParseObject("Movie"));
                 } else {
@@ -117,6 +121,7 @@ public class InvitationDAL implements IInvitationActions {
                     }
                 }
 
+                // Query Cinema from cinema table
                 if(InvitationObject.getParseObject("Cinema").isDataAvailable()) {
                     SelectCinema = Cinema.createCinemaFromObject(InvitationObject.getParseObject("Cinema"));
                 } else {
@@ -128,7 +133,7 @@ public class InvitationDAL implements IInvitationActions {
                     }
                 }
 
-
+                // Create invitation class
                 MovieInvitation Invitation = new MovieInvitation(InvitationObject.getInt("ID"),
                         SenderFriend,
                         ReceiverFriend,
@@ -141,6 +146,7 @@ public class InvitationDAL implements IInvitationActions {
                 arrInvitations.add(Invitation);
             }
 
+            // Return all receive invitations
             return arrInvitations;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -151,6 +157,7 @@ public class InvitationDAL implements IInvitationActions {
 
     @Override
     public void addNewInvitation(MovieInvitation invitation) {
+        // Add new Invitation
         ParseObject newInvitationObject = new ParseObject("Invitations");
         newInvitationObject.put("SenderFriend",ParseObject.createWithoutData("Users", invitation.getFromFriend().getID()));
         newInvitationObject.put("ReceiverFriend",ParseObject.createWithoutData("Users", invitation.getToFriend().getID()));
@@ -166,10 +173,10 @@ public class InvitationDAL implements IInvitationActions {
 
     @Override
     public void updateInvitation(final MovieInvitation invitation) {
-
+        // Query exist invitation and update
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Invitations");
 
-        query.getInBackground(invitation.getObjetcID() ,new GetCallback<ParseObject>() {
+        query.getInBackground(invitation.getObjetcID(), new GetCallback<ParseObject>() {
             public void done(ParseObject newInvitationObject, ParseException e) {
                 if (e == null) {
                     newInvitationObject.setObjectId(invitation.getObjetcID());
@@ -189,6 +196,7 @@ public class InvitationDAL implements IInvitationActions {
 
     @Override
     public void removeInvitation(final MovieInvitation invitation) {
+        // Query exist invitation and remove
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Invitations");
         query.whereEqualTo("ID",invitation.getId());
 

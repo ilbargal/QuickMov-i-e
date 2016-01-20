@@ -101,6 +101,8 @@ public class InvitationFragment extends ListFragment {
             txtMovieDetails.setText(currInvitation.getFromFriend().getName() + " הזמין אותך לסרט: " +
                     currInvitation.getMovie().getName() + "\n" + " בקולנוע: " + currInvitation.getCinema().getName() +
                     "\n בתאריך: " + movieDate + " בשעה: " + movieTime);
+
+            checkIsAccepted.setChecked(currInvitation.isAccepted());
             checkIsAccepted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

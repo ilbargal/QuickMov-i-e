@@ -22,14 +22,16 @@ public class FriendDAL implements IFriendActions {
     @Override
     public List<Friend> getFriendsByUser(User user) {
         try {
+
+            // Sub Query from users
             ParseQuery<ParseObject> queryuser = ParseQuery.getQuery("Users");
             queryuser.whereEqualTo("objectId", user.getID());
 
+            // query from friend
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Friends");
              query.whereMatchesQuery("UserID", queryuser);
 
             query.include("Users");
-
 
             List<ParseObject> data = query.find();
             if(data.size() == 1) {
@@ -55,6 +57,7 @@ public class FriendDAL implements IFriendActions {
 
         List<Friend> arrFriends = new ArrayList<Friend>();
         for (ParseObject FriendObject : data) {
+            // Save for localDB
             if (true) {
                 FriendObject.pinInBackground("Users");
             }
@@ -74,11 +77,11 @@ public class FriendDAL implements IFriendActions {
     }
 
     @Override
-    public boolean addFriendstoUser(User user, List<Friend> newFriends) {
+    public boolean addFriendstoUser(final User user, List<Friend> newFriends) {
         String ObjectID = "";
 
         ParseQuery<ParseObject> queryObjectID = ParseQuery.getQuery("Friends");
-        queryObjectID.whereEqualTo("UserID",ParseObject.createWithoutData("Users", user.getID()));
+        queryObjectID.whereEqualTo("UserID", ParseObject.createWithoutData("Users", user.getID()));
 
         try {
             List<ParseObject> UserFriends = queryObjectID.find();
@@ -98,6 +101,8 @@ public class FriendDAL implements IFriendActions {
                         if (e == null) {
                             FriendObject.getRelation("FriendsID").add(ParseObject.createWithoutData("Users", newFriend.getID()));
                             FriendObject.saveEventually();
+
+                            addUserToFriend(newFriend, user);
                         }
                     }
                 });
@@ -109,14 +114,58 @@ public class FriendDAL implements IFriendActions {
         }
         else
         {
-            ParseObject Friend = new ParseObject("Friends");
-            Friend.put("UserID", ParseObject.createWithoutData("Users", user.getID()));
-            Friend.getRelation("FriendsID").add(ParseObject.createWithoutData("Users", newFriends.get(0).getID()));
-            Friend.saveInBackground();
+            ParseObject Friendobject = new ParseObject("Friends");
+            Friendobject.put("UserID", ParseObject.createWithoutData("Users", user.getID()));
+            Friendobject.getRelation("FriendsID").add(ParseObject.createWithoutData("Users", newFriends.get(0).getID()));
+            Friendobject.saveEventually();
+
+            addUserToFriend(newFriends.get(0),user);
+
             user.getFriends().add(newFriends.get(0));
             newFriends.remove(0);
 
             return addFriendstoUser(user, newFriends);
         }
+    }
+
+    private boolean addUserToFriend(Friend newFriend,final User user) {
+        String ObjectID = "";
+        ParseQuery<ParseObject> queryObjectID = ParseQuery.getQuery("Friends");
+        queryObjectID.whereEqualTo("UserID", ParseObject.createWithoutData("Users", newFriend.getID()));
+
+        try {
+            List<ParseObject> UserFriends = queryObjectID.find();
+            if(UserFriends.size() == 1) {
+                ObjectID = UserFriends.get(0).getObjectId();
+            } else {
+                ObjectID = "";
+            }
+
+                if (ObjectID != "") {
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Friends");
+
+                    query.getInBackground(ObjectID, new GetCallback<ParseObject>() {
+                        public void done(ParseObject FriendObject, ParseException e) {
+                            if (e == null) {
+                                FriendObject.getRelation("FriendsID").add(ParseObject.createWithoutData("Users", user.getID()));
+                                FriendObject.saveEventually();
+                            }
+                        }
+                    });
+
+                    return true;
+                } else {
+                    ParseObject Friend = new ParseObject("Friends");
+                    Friend.put("UserID", ParseObject.createWithoutData("Users", newFriend.getID()));
+                    Friend.getRelation("FriendsID").add(ParseObject.createWithoutData("Users", user.getID()));
+                    Friend.saveEventually();
+
+                    return true;
+                }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
