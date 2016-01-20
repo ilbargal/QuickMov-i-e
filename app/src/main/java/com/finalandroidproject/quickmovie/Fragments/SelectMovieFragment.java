@@ -42,6 +42,7 @@ import java.util.List;
 public class SelectMovieFragment extends Fragment {
 
     public Movie currMovie;
+    public Cinema currCinema;
     public static List<Friend> friends;
     public InvitationCreateListener listener;
     public AlertDialog movieDialog;
@@ -84,8 +85,9 @@ public class SelectMovieFragment extends Fragment {
                 .setItems(moviesNames.toArray(new CharSequence[moviesNames.size()]), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         currMovie = Cache.Movies.get(which);
+
+                        // Change chosen movie detials: picutrue, description and name
                         setMovieDetails(currView, currMovie);
-                        cinemasDialog = createCinemasDialog(currView, currMovie);
                     }
                 });
         return builder.create();
@@ -94,17 +96,16 @@ public class SelectMovieFragment extends Fragment {
     public AlertDialog createCinemasDialog(final View currView, Movie currMovie) {
         ArrayList<String> cinemas = new ArrayList<String>();
 
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(CHOOSE_CINEMA_DIALOG_TITLE);
         if (currMovie.getCinemas() != null) {
-            for (Cinema cinema : currMovie.getCinemas()) {
+            for (Cinema cinema : Cache.Cinemas) {
                 cinemas.add(cinema.getName());
             }
 
             builder.setItems(cinemas.toArray(new CharSequence[cinemas.size()]), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-
+                    currCinema = Cache.Cinemas.get(which);
                 }
             });
         }
@@ -159,7 +160,7 @@ public class SelectMovieFragment extends Fragment {
                                     new Friend(Cache.currentUser.getID(), Cache.currentUser.getPhone(), Cache.currentUser.getName()),
                                     currFriend,
                                     currMovie,
-                                    Cache.Cinemas.get(0),
+                                    currCinema,
                                     new Date());
 
                             new InvitationDAL().addNewInvitation(invitation);
