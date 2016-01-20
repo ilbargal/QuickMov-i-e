@@ -51,6 +51,7 @@ public class SelectMovieFragment extends Fragment {
 
     private final String CHOOSE_CINEMA_DIALOG_TITLE = "בחר אולם קולנוע";
     private final String CHOOSE_MOVIE_DIALOG_TITLE = "בחר סרט";
+    private final String DEFAULT_FRIEND_PICTURE_PATH = "http://kollabase.com/data/userpics/default.png";
     private final int HIGH_RATING = 8;
     private final int MIDDLE_RATING = 4;
 
@@ -288,7 +289,7 @@ public class SelectMovieFragment extends Fragment {
                 if (currFriend.getProfilePic() != null && currFriend.getProfilePic() != "") {
                     new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute(currFriend.getProfilePic());
                 } else {
-                    new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute("http://kollabase.com/data/userpics/default.png");
+                    new DownloadImageTask(imgFriendImage, (ProgressBar) convertView.findViewById(R.id.friendProgressbar)).execute(DEFAULT_FRIEND_PICTURE_PATH);
 
                 }
             }
